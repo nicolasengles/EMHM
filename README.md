@@ -3,10 +3,10 @@
 ## Como Instalar
 
 ### Criar um ambiente virtual
-> python -m venv [Nome do Ambiente]
+> python -m venv .venv
 
 ### Ativar o ambiente virtual
-> [Nome do Ambiente]\Scripts\activate
+> .venv\Scripts\activate
 
 ### Instalar dependências
 > pip install -r requirements.txt
