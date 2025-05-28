@@ -1,7 +1,7 @@
 import tkinter as tk
 from PIL import Image, ImageTk
+import janela
 from TelaPartida import *
-from emhm import EMHM
 
 class TelaMenuPrincipal(tk.Canvas):
     def __init__(self, master, width=1280, height=720, highlightthickness=0):
@@ -33,8 +33,7 @@ class TelaMenuPrincipal(tk.Canvas):
         img1 = self.create_image(btn_x, btn_y, image=button_img, anchor='n')
 
         def on_first_click(event):
-            print("Primeiro botão clicado")
-            EMHM.mudar_tela(EMHM.janela, TelaPartida)
+            janela.Janela.mudar_tela(tela_nova=TelaPartida)
 
         for tag in (rect1, img1):
             self.tag_bind(tag, '<Button-1>', on_first_click)
