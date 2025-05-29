@@ -14,13 +14,14 @@ class TelaMenuPrincipal(tk.Canvas):
         imagem_botao1     = ImageTk.PhotoImage(arquivo_imagem_botao1)
         arquivo_imagem_botao2 = Image.open(r"images/Frame_3.png").resize((203,58), Image.LANCZOS)
         imagem_botao2   = ImageTk.PhotoImage(arquivo_imagem_botao2)
-
-        # Criar canvas e adicionar título e imagem de fundo
+        arquivo_imagem_subtitulo    = Image.open(r"images/HistoriaseMapas.png").resize((480, 61), Image.LANCZOS)
+        imagem_subtitulo      = ImageTk.PhotoImage(arquivo_imagem_subtitulo)
+        # Criar canvas e adicionar título, subtitulo e imagem de fundo
         self.pack(fill="both", expand=True)
         self.create_image(0, 0, image=imagem_fundo, anchor=tk.NW)
         self.create_image(640, 200, image=imagem_titulo, anchor='n')
-
-        # Primeiro botão
+        self.create_image(960, 270, image=imagem_subtitulo)
+        # Botão jogar
         botao_x, botao_y = 640, 200 + 62 + 15
         comprimento_botao, altura_botao = 203, 58
 
@@ -56,3 +57,4 @@ class TelaMenuPrincipal(tk.Canvas):
         master.bg_img = imagem_fundo
         master.title_img = imagem_titulo
         master.button_img = imagem_botao1
+        master.subtitulo = imagem_subtitulo
