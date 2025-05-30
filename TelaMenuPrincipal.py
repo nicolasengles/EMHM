@@ -1,60 +1,53 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-import janela
-from TelaPartida import *
+from TelaPartida import TelaPartida
 
 class TelaMenuPrincipal(tk.Canvas):
     def __init__(self, master, width=1280, height=720, highlightthickness=0):
-        super().__init__(master)
-        # Carregar imagens
-        imagem_fundo         = tk.PhotoImage(file='images/imagemfundo0.png')
-        arquivo_imagem_titulo      = Image.open(r"images/EXPEDICAO_DO_MILHAO.png").resize((750, 75), Image.LANCZOS)
-        imagem_titulo      = ImageTk.PhotoImage(arquivo_imagem_titulo)
-        arquivo_imagem_botao1 = Image.open(r"images/Frame.png").resize((300, 80), Image.LANCZOS)
-        imagem_botao1     = ImageTk.PhotoImage(arquivo_imagem_botao1)
-        arquivo_imagem_botao2 = Image.open(r"images/Frame_3.png").resize((203,58), Image.LANCZOS)
-        imagem_botao2   = ImageTk.PhotoImage(arquivo_imagem_botao2)
-        arquivo_imagem_subtitulo    = Image.open(r"images/HistoriaseMapas.png").resize((500, 65), Image.LANCZOS)
-        imagem_subtitulo      = ImageTk.PhotoImage(arquivo_imagem_subtitulo)
-        # Criar canvas e adicionar título, subtitulo e imagem de fundo
+        # 1) inicializa o Canvas já com tamanho
+        super().__init__(master, width=width, height=height, highlightthickness=highlightthickness)
         self.pack(fill="both", expand=True)
-        self.create_image(0, 0, image=imagem_fundo, anchor=tk.NW)
-        self.create_image(640, 100, image=imagem_titulo, anchor='n')
-        self.create_image(810, 200, image=imagem_subtitulo)
-        # Botão jogar
-        botao_x, botao_y = 640, 300 + 62 + 15
-        comprimento_botao, altura_botao = 406, 70
 
-        retangulo1 = self.create_rectangle(
-            botao_x - comprimento_botao/2, botao_y,
-            botao_x + comprimento_botao/2, botao_y + altura_botao,
-            fill='', outline=''
-        )
-        imagem1 = self.create_image(botao_x, botao_y, image=imagem_botao1, anchor='n')
+        # 2) carrega e mantém as imagens
+        self.imagem_fundo = tk.PhotoImage(file='images/imagemfundo0.png')
+        raw_titulo = Image.open("images/EXPEDICAO_DO_MILHAO.png")\
+                          .resize((750, 75), Image.LANCZOS)
+        self.imagem_titulo = ImageTk.PhotoImage(raw_titulo)
+        raw_sub = Image.open("images/HistoriaseMapas.png")\
+                       .resize((500, 65), Image.LANCZOS)
+        self.imagem_subtitulo = ImageTk.PhotoImage(raw_sub)
+        raw_jogar = Image.open('images/Alternativa.png')\
+                         .resize((330, 62), Image.LANCZOS)
+        self.imagem_jogar = ImageTk.PhotoImage(raw_jogar)
 
-        def on_first_click(event):
-            janela.Janela.mudar_tela(tela_nova=TelaPartida)
+        # 3) desenha fundo e logo
+        self.create_image(0, 0, image=self.imagem_fundo, anchor='nw')
+        self.create_image(640, 100, image=self.imagem_titulo, anchor='n')
+        self.create_image(810, 200, image=self.imagem_subtitulo, anchor='n')
 
-        for tag in (retangulo1, imagem1):
-            self.tag_bind(tag, '<Button-1>', on_first_click)
+        # 4) “botão” JOGAR usando Canvas + tag única
+        btn_tag = 'btn_jogar'
+        self.create_image(640, 300,
+                          image=self.imagem_jogar,
+                          anchor='n',
+                          tags=(btn_tag,))
+        self.create_text(640, 315,
+                         text="JOGAR",
+                         font=("Californian FB", 20, "bold"),
+                         fill="black",
+                         anchor='n',
+                         tags=(btn_tag,))
+        self.tag_bind(btn_tag, '<Button-1>', self.jogar)
 
-        # Segundo botão
-        botao2_y = botao_y + altura_botao + 30
-        retangulo2 = self.create_rectangle(
-            botao_x - comprimento_botao/2, botao2_y,
-            botao_x + comprimento_botao/2, botao2_y + altura_botao,
-            fill='', outline=''
-        )
-        imagem2 = self.create_image(botao_x, botao2_y, image=imagem_botao2, anchor='n')
+    def jogar(self, event=None):
+        # destrói a TelaMenuPrincipal atual
+        self.destroy()
+        # abre a TelaPartida
+        TelaPartida(self.master)
 
-        def on_second_click(event):
-            print("Segundo botão clicado")
 
-        for tag in (retangulo2, imagem2):
-            self.tag_bind(tag, '<Button-1>', on_second_click)
-
-        # Manter imagens na memória
-        master.bg_img = imagem_fundo
-        master.title_img = imagem_titulo
-        master.button_img = imagem_botao1
-        master.subtitulo = imagem_subtitulo
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.geometry("1280x720")
+    TelaMenuPrincipal(root)
+    root.mainloop()

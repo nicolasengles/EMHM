@@ -2,6 +2,7 @@ import tkinter as tk
 from TelaMenuPrincipal import *
 from TelaInicial import *
 from TelaPartida import * 
+from TelaGameOver import *
 
 class Janela:
     #  Criar Janela
