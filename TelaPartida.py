@@ -6,10 +6,14 @@ class TelaPartida(tk.Canvas):
         super().__init__(master)
         
         # --- Load & resize images ---
-        bg_img = tk.PhotoImage(file='images/imagemfundo0.png')
-
+        imagem_fundo         = tk.PhotoImage(file='images/imagemfundo0.png')
+        arquivo_nivel_de_dificuldade = Image.open(r"images/NivelDeDificuldade.png").resize((120, 52), Image.LANCZOS)
+        imagem_nivel_de_dificuldade = ImageTk.PhotoImage(arquivo_nivel_de_dificuldade)
+    
         # --- Create canvas and draw background & title ---
         self.pack(fill="both", expand=True)
-
+        self.create_image(0, 0, image= imagem_fundo, anchor=tk.NW)
+        self.create_image(320, 100, image=ImageTk.PhotoImage(imagem_nivel_de_dificuldade), anchor='n')
         # --- Keep references to prevent GC ---
-        master.bg_img = bg_img
+        master.fundo = imagem_fundo
+        master.nivel = imagem_nivel_de_dificuldade

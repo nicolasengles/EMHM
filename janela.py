@@ -1,5 +1,7 @@
 import tkinter as tk
 from TelaMenuPrincipal import *
+from TelaInicial import *
+from TelaPartida import * 
 
 class Janela:
     #  Criar Janela
@@ -9,7 +11,7 @@ class Janela:
     janela.maxsize(1280, 720)
 
     #  Definir tela_atual aqui:
-    tela_atual = TelaMenuPrincipal(master=janela)
+    tela_atual = TelaInicial(master=janela)
 
     @staticmethod
     def iniciar_janela():
