@@ -24,20 +24,20 @@ class TelaPartida(tk.Canvas):
 
         # 3) desenha textos fixos
         self.create_text(1250, 32,
-                         text="FÁCIL",
-                         font=("IM FELL ENGLISH SC", 18, "bold"),
-                         fill="green",
-                         anchor='ne')
+            text="FÁCIL",
+            font=("IM FELL ENGLISH SC", 18, "bold"),
+            fill="green",
+            anchor='ne')
         self.create_text(width/2, 190,
-                         text="Qual foi o objetivo do Tratado de Versalhes?",
-                         font=("Californian FB", 32, "bold"),
-                         fill="darkred",
-                         anchor='center')
+            text="Qual foi o objetivo do Tratado de Versalhes?",
+            font=("Californian FB", 32, "bold"),
+            fill="darkred",
+            anchor='center')
         self.create_text(50, 35,
-                         text="QUESTÃO 1",
-                         font=("Californian FB", 22, "bold"),
-                         fill="darkred",
-                         anchor='nw')
+            text="QUESTÃO 1",
+            font=("Californian FB", 22, "bold"),
+            fill="darkred",
+            anchor='nw')
 
         # 4) desenha textos das alternativas
         alternativas = [
@@ -49,21 +49,21 @@ class TelaPartida(tk.Canvas):
         ]
         for x, y, txt in alternativas:
             self.create_text(x, y,
-                             text=txt,
-                             font=("Californian FB", 13, "bold"))
+                text=txt,
+                font=("Californian FB", 13, "bold"))
 
         # 5) cria o “botão” DESISTIR usando tag para imagem+texto
         btn_tag = 'btn_desistir'
         self.create_image(630, 660,
-                          image=self.imagem_alt,
-                          anchor='center',
-                          tags=(btn_tag,))
+            image=self.imagem_alt,
+            anchor='center',
+            tags=(btn_tag,))
         self.create_text(630, 660,
-                         text="DESISTIR",
-                         font=("Californian FB", 18, "bold"),
-                         fill="darkred",
-                         anchor='center',
-                         tags=(btn_tag,))
+            text="DESISTIR",
+            font=("Californian FB", 18, "bold"),
+            fill="darkred",
+            anchor='center',
+            tags=(btn_tag,))
 
         # 6) vincula clique na tag para chamar handler
         self.tag_bind(btn_tag, '<Button-1>', self._on_desistir)

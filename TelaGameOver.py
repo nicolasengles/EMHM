@@ -16,10 +16,11 @@ class TelaGameOver(tk.Canvas):
         # 3) Desenha no Canvas
         self.create_image(0, 0, image=self.imagem_fundo, anchor=tk.NW)
         self.create_text(640, 100,
-                         text="GAME OVER",
-                         font=("Californian FB", 48, "bold"),
-                         fill="darkred",
-                         anchor='n')
+            text="GAME OVER",
+            font=("Californian FB", 48, "bold"),
+            fill="darkred",
+            anchor='n'
+        )
         
         self.create_text(640, 200,
             text="PONTUAÇÃO FINAL: 5000 reais",

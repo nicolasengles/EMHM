@@ -28,15 +28,19 @@ class TelaMenuPrincipal(tk.Canvas):
         # 4) “botão” JOGAR usando Canvas + tag única
         btn_tag = 'btn_jogar'
         self.create_image(640, 300,
-                          image=self.imagem_jogar,
-                          anchor='n',
-                          tags=(btn_tag,))
+            image=self.imagem_jogar,
+            anchor='n',
+            tags=(btn_tag,)
+        )
+
         self.create_text(640, 315,
-                         text="JOGAR",
-                         font=("Californian FB", 20, "bold"),
-                         fill="black",
-                         anchor='n',
-                         tags=(btn_tag,))
+            text="JOGAR",
+            font=("Californian FB", 20, "bold"),
+            fill="black",
+            anchor='n',
+            tags=(btn_tag,)
+        )
+        
         self.tag_bind(btn_tag, '<Button-1>', self.jogar)
 
     def jogar(self, event=None):
