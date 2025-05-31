@@ -3,67 +3,79 @@ from PIL import Image, ImageTk
 
 class TelaInicial(tk.Canvas):
     def __init__(self, master, width=1280, height=720, highlightthickness=0):
-        super().__init__(master)
-        # Insira aqui todo o código desta tela
-        arquivo_imagem_fundo = Image.open('images/imagemfundo0.png')
-        imagem_fundo = ImageTk.PhotoImage(arquivo_imagem_fundo) 
-
-        arquivo_imagem_titulo = Image.open(r"images/EXPEDICAO_DO_MILHAO.png").resize((750, 75), Image.LANCZOS)
-        imagem_titulo = ImageTk.PhotoImage(arquivo_imagem_titulo) 
-
-        arquivo_imagem_subtitulo = Image.open(r"images/HistoriaseMapas.png").resize((500, 65), Image.LANCZOS)
-        imagem_subtitulo = ImageTk.PhotoImage(arquivo_imagem_subtitulo) 
-        arquivo_DesejaLogar = Image.open(r"images/DesejaLogar.png").resize((300, 50), Image.LANCZOS)
-        imagem_DesejaLogar = ImageTk.PhotoImage(arquivo_DesejaLogar)
-        arquivo_professor = Image.open(r'images/FrameProfessor.png').resize((300, 80), Image.LANCZOS)
-        imagem_professor = ImageTk.PhotoImage(arquivo_professor)
-        arquivo_aluno = Image.open(r'images/FrameAluno.png').resize((300, 80), Image.LANCZOS)
-        imagem_aluno = ImageTk.PhotoImage(arquivo_aluno)
-
-# Criar canvas e adicionar título, subtitulo e imagem de fundo
+        # 1) Inicializa o Canvas com tamanho definido
+        super().__init__(master, width=width, height=height, highlightthickness=highlightthickness)
+        # 2) Empacota o Canvas antes de desenhar
         self.pack(fill="both", expand=True)
-        self.create_image(0, 0, image=imagem_fundo, anchor=tk.NW)
-        self.create_image(640, 100, image=imagem_titulo, anchor='n')
-        self.create_image(810, 200, image=imagem_subtitulo)
-        self.create_image(640, 320, image=imagem_DesejaLogar, anchor='n')
 
+        # 3) Carrega as imagens e armazena em atributos de instância
+        img_fundo = Image.open('images/imagemfundo0.png')
+        self.imagem_fundo = ImageTk.PhotoImage(img_fundo)
 
-# Botão Professor
-        botao_x, botao_y = 640, 300 + 62 + 15
-        comprimento_botao, altura_botao = 406, 70
+        raw_titulo = Image.open("images/EXPEDICAO_DO_MILHAO.png").resize((750, 75), Image.LANCZOS)
+        self.imagem_titulo = ImageTk.PhotoImage(raw_titulo)
 
-        retangulo3 = self.create_rectangle(
-            botao_x - comprimento_botao/2, botao_y,
-            botao_x + comprimento_botao/2, botao_y + altura_botao,
-            fill='', outline=''
+        raw_subtitulo = Image.open("images/HistoriaseMapas.png").resize((500, 65), Image.LANCZOS)
+        self.imagem_subtitulo = ImageTk.PhotoImage(raw_subtitulo)
+
+        raw_deseja = Image.open("images/DesejaLogar.png").resize((300, 50), Image.LANCZOS)
+        self.imagem_deseja = ImageTk.PhotoImage(raw_deseja)
+
+        raw_prof = Image.open('images/FrameProfessor.png').resize((300, 80), Image.LANCZOS)
+        self.imagem_professor = ImageTk.PhotoImage(raw_prof)
+
+        raw_aluno = Image.open('images/FrameAluno.png').resize((300, 80), Image.LANCZOS)
+        self.imagem_aluno = ImageTk.PhotoImage(raw_aluno)
+
+        # 4) Desenha a tela: fundo, título, subtítulo e aviso “Deseja Logar?”
+        self.create_image(0, 0, image=self.imagem_fundo, anchor=tk.NW)
+        self.create_image(640, 100, image=self.imagem_titulo, anchor='n')
+        self.create_image(810, 200, image=self.imagem_subtitulo, anchor='n')
+        self.create_image(640, 320, image=self.imagem_deseja, anchor='n')
+
+        # 5) Cria o botão “PROFESSOR” usando Canvas + tag única
+        btn_prof_tag = 'btn_professor'
+        self.create_image(
+            640, 400,
+            image=self.imagem_professor,
+            anchor='n',
+            tags=(btn_prof_tag,)  # observe a vírgula!
         )
-        imagem3 = self.create_image(botao_x, botao_y, image=imagem_professor, anchor='n')
 
-        for tag in (retangulo3, imagem3):
-            self.tag_bind(tag, '<Button-1>')
+        # 6) Vincula o clique na tag ao método on_first_click
+        self.tag_bind(btn_prof_tag, '<Button-1>', self.on_first_click)
 
-       # Segundo botão
-        botao4_y = botao_y + altura_botao + 30
-        retangulo4 = self.create_rectangle(
-            botao_x - comprimento_botao/2, botao4_y,
-            botao_x + comprimento_botao/2, botao4_y + altura_botao,
-        fill='', outline=''
-)
+        # 7) Se desejar também um botão “ALUNO”, proceda de forma análoga:
+        btn_aluno_tag = 'btn_aluno'
+        self.create_image(
+            640, 500,
+            image=self.imagem_aluno,
+            anchor='n',
+            tags=(btn_aluno_tag,)
+        )
 
-        imagem4 = self.create_image(botao_x, botao4_y, image=imagem_aluno, anchor='n')
+        self.tag_bind(btn_aluno_tag, '<Button-1>', self.on_click_aluno)
 
-        def on_second_click(event):
-            print("Botão Aluno botão clicado")
+    def on_first_click(self, event):
+        print("Botão Professor clicado")
+        #  Antes de criar a próxima tela, destrua tudo nesta janela:
+        self.destroy()
+        #  Importe aqui, dentro do método, para evitar problemas de import circular
+        from TelaMenuPrincipal import TelaMenuPrincipal
+        TelaMenuPrincipal(self.master)
 
-        for tag in (retangulo4, imagem4):
-            self.tag_bind(tag, '<Button-1>', on_second_click)
+    def on_click_aluno(self, event):
+        print("Botão Aluno clicado")
+        #  Destrói a tela atual:
+        self.destroy()
+        #  Se existir uma outra tela para “Aluno”, importe e instancie aqui.
+        #  Por exemplo:
+        # from TelaAluno import TelaAluno
+        # TelaAluno(self.master)
 
-        
- # Manter imagens na memória
-        master.bg_img = imagem_fundo
-        master.title_img = imagem_titulo
-        master.subtitulo = imagem_subtitulo
-        master.logar = imagem_DesejaLogar
-        master.professor = imagem_professor
-        master.aluno = imagem_aluno
-     
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.geometry("1280x720")
+    TelaInicial(root)
+    root.mainloop()
