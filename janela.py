@@ -3,7 +3,7 @@ from TelaMenuPrincipal import *
 from TelaInicial import *
 from TelaPartida import * 
 from TelaGameOver import *
-from PainelProfessor import *
+from TelaLoginProfessor import *
 from DbManagement import *
 
 class Janela:
@@ -14,7 +14,7 @@ class Janela:
     janela.maxsize(1280, 720)
 
     #  Definir tela_atual aqui:
-    tela_atual = TelaPartida(master=janela)
+    tela_atual = TelaMenuPrincipal(master=janela)
 
     @staticmethod
     def iniciar_janela():

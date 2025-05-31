@@ -1,7 +1,8 @@
-import enum
+from enum import Enum
 from random import random
+from sgbd import buscar_perguntas
 
-class Ajuda(enum):
+class Ajuda(Enum):
     DICA = 0
     DUAS_OPCOES = 1
     PLATEIA = 2
@@ -13,7 +14,7 @@ class Partida:
         pontuacao = 0
         ajudas_disponiveis = [Ajuda.DICA, Ajuda.DUAS_OPCOES, Ajuda.PLATEIA]
         numero_pergunta_atual = 1
-        perguntas = [] #buscar_perguntas(materia, rodada)
+        perguntas = buscar_perguntas(self.materia, self.rodada)
         pergunta_atual = None
         perguntas_previas = []
     
@@ -29,4 +30,4 @@ class Partida:
     def proxima_rodada(self):
         self.rodada += 1
         self.perguntas = []
-        #self.perguntas = buscar_perguntas(materia, rodada)
+        self.perguntas = buscar_perguntas(self.materia, self.rodada)
