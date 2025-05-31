@@ -14,7 +14,7 @@ class Janela:
     janela.maxsize(1280, 720)
 
     #  Definir tela_atual aqui:
-    tela_atual = PainelProfessor(master=janela)
+    tela_atual = TelaPartida(master=janela)
 
     @staticmethod
     def iniciar_janela():
