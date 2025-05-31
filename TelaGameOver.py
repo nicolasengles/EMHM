@@ -55,13 +55,8 @@ class TelaGameOver(tk.Canvas):
         # o ciclo de importações no topo do arquivo
         from TelaMenuPrincipal import TelaMenuPrincipal
         TelaMenuPrincipal(self.master)
-        # Aqui você pode adicionar a lógica para reiniciar o jogo
 
 
-        # Aqui você pode adicionar a lógica para reiniciar o jogo ou voltar ao menu principal
-        # Por exemplo, chamar uma função que reinicia o jogo ou muda para a tela inicial
-        # janela.Janela.mudar_tela(tela_nova=TelaInicial)
-        # Ou qualquer outra ação desejada
 
 
 
