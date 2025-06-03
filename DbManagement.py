@@ -21,6 +21,30 @@ class DbManagement(tk.Canvas):
         )
 
 
+        # Botão Manter Perguntas  
+        btn_perguntas_tag = 'btn_perguntas'
+        self.create_text(640, 300,
+            text="GERENCIAR PERGUNTAS",
+            font=("Arial", 18, "bold"),
+            fill="light green",
+            anchor='n',
+            tags=(btn_perguntas_tag,)
+        )
+
+        # Botão Manter Turmas
+        btn_turmas_tag = 'btn_turmas'
+        self.create_text(640, 400,
+            text="GERENCIAR TURMAS",
+            font=("Arial", 18, "bold"),
+            fill="white",
+            anchor='n',
+            tags=(btn_turmas_tag,)
+        )
+
+        
+
+
+
 
 
 
