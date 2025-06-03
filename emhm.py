@@ -1,4 +1,4 @@
-from janela import Janela
+from janela import janela
 
 if __name__ == "__main__":
-    Janela.iniciar_janela()
+    janela.iniciar_janela()

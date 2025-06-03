@@ -6,6 +6,7 @@ from pergunta import Pergunta
 from turma import Turma
 from professor import Professor
 import app
+from enums import TipoUsuario
 
 load_dotenv()
 
@@ -19,17 +20,17 @@ sgbd = mysql.connector.connect(
 
 bd = sgbd.cursor()
 
-def autenticar_usuario(tipo_usuario: app.TipoUsuario, email : str, senha : str):
+def autenticar_usuario(tipo_usuario: TipoUsuario, email : str, senha : str):
     try:
         match tipo_usuario:
-            case app.TipoUsuario.ALUNO:
+            case TipoUsuario.ALUNO:
                 bd.execute(f"SELECT * FROM aluno WHERE email = '{email}' AND senha = '{senha}';")
                 dados = bd.fetchall()[0]
 
                 bd.execute(f"SELECT * FROM turma WHERE id = {dados[5]};")
                 dados_turma = bd.fetchall()[0]
 
-                app.usuario = Aluno(
+                app.app.usuario = Aluno(
                     id=dados[0],
                     email=dados[1],
                     nome=dados[3],
@@ -249,7 +250,7 @@ def excluir_aluno(aluno : Aluno):
 def buscar_perguntas(materia, dificuldade):
     if dificuldade == -1:
         bd.execute(f"SELECT * FROM pergunta;")
-    elif materia == -1:
+    elif materia == 2:
         bd.execute(f"SELECT * FROM pergunta WHERE dificuldade = {dificuldade};")
     else:
         bd.execute(f"SELECT * FROM pergunta WHERE materia = '{materia}' AND dificuldade = {dificuldade};")

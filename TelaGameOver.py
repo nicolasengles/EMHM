@@ -1,5 +1,7 @@
 import tkinter as tk
 from PIL import Image, ImageTk
+import janela
+# from TelaMenuPrincipal import TelaMenuPrincipal
 
 class TelaGameOver(tk.Canvas):
     def __init__(self, master, width=1280, height=720, highlightthickness=0):
@@ -49,20 +51,9 @@ class TelaGameOver(tk.Canvas):
 
     def reiniciar(self):
         # destrói a tela atual
-        self.destroy()
+        # self.destroy()
 
         # faz o import aqui, dentro do método, para evitar
         # o ciclo de importações no topo do arquivo
         from TelaMenuPrincipal import TelaMenuPrincipal
-        TelaMenuPrincipal(self.master)
-
-
-
-
-
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    root.geometry("1280x720")
-    TelaGameOver(root)
-    root.mainloop()
+        janela.janela.mudar_tela(TelaMenuPrincipal(self.master))

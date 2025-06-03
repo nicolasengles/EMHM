@@ -1,5 +1,7 @@
 import tkinter as tk
 from PIL import Image, ImageTk
+import janela
+from TelaMenuPrincipal import TelaMenuPrincipal
 
 class TelaInicial(tk.Canvas):
     def __init__(self, master, width=1280, height=720, highlightthickness=0):
@@ -57,25 +59,16 @@ class TelaInicial(tk.Canvas):
         self.tag_bind(btn_aluno_tag, '<Button-1>', self.on_click_aluno)
 
     def on_first_click(self, event):
-        print("Botão Professor clicado")
-        #  Antes de criar a próxima tela, destrua tudo nesta janela:
-        self.destroy()
         #  Importe aqui, dentro do método, para evitar problemas de import circular
-        from TelaMenuPrincipal import TelaMenuPrincipal
-        TelaMenuPrincipal(self.master)
+        # from TelaMenuPrincipal import TelaMenuPrincipal
+        janela.janela.mudar_tela(TelaMenuPrincipal(self.master))
 
     def on_click_aluno(self, event):
-        print("Botão Aluno clicado")
-        #  Destrói a tela atual:
-        self.destroy()
-        #  Se existir uma outra tela para “Aluno”, importe e instancie aqui.
-        #  Por exemplo:
-        # from TelaAluno import TelaAluno
-        # TelaAluno(self.master)
+        pass
 
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    root.geometry("1280x720")
-    TelaInicial(root)
-    root.mainloop()
+# if __name__ == "__main__":
+#     root = tk.Tk()
+#     root.geometry("1280x720")
+#     TelaInicial(root)
+#     root.mainloop()

@@ -1,19 +1,27 @@
-from enum import Enum
+# from enum import Enum
 from aluno import Aluno
 from professor import Professor
 from turma import Turma
+from partida import Partida
+# from janela import Janela
 
-class TipoUsuario(Enum):
-    ALUNO = 0
-    PROFESSOR = 1
+class App():
+    def __init__(self):
+        self.usuario = None
+        self.partida = None
+        self.turmas = []
+        self.perguntas = []
 
-usuario = None
-    
-turmas = []
-perguntas = []
+    def get_turma(self, nome : str):
+        try:
+            return [turma for turma in self.turmas if turma.nome == nome][0]
+        except IndexError:
+            return None
+        
+    def iniciar_partida(self, materia):
+        self.partida = Partida(materia)
 
-def get_turma(nome : str):
-    try:
-        return [turma for turma in turmas if turma.nome == nome][0]
-    except IndexError:
-        return None
+    def finalizar_partida(self):
+        self.partida = None
+
+app = App()
