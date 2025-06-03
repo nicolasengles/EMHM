@@ -2,7 +2,7 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from datetime import datetime
 
-class PainelProfessor(tk.Canvas):
+class TelaLoginProfessor(tk.Canvas):
     def __init__(self, master, width=1280, height=720, highlightthickness=0):
         super().__init__(master, width=width, height=height, highlightthickness=highlightthickness)
         self.pack(fill="both", expand=True)
@@ -95,5 +95,5 @@ class PainelProfessor(tk.Canvas):
 if __name__ == "__main__":
     root = tk.Tk()
     root.geometry("1280x720")
-    PainelProfessor(root)
+    TelaLoginProfessor(root)
     root.mainloop()

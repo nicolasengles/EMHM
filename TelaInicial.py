@@ -1,7 +1,8 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 import janela
-from TelaMenuPrincipal import TelaMenuPrincipal
+from TelaLoginProfessor import TelaLoginProfessor
+from TelaLoginAluno import TelaLoginAluno
 
 class TelaInicial(tk.Canvas):
     def __init__(self, master, width=1280, height=720, highlightthickness=0):
@@ -35,22 +36,9 @@ class TelaInicial(tk.Canvas):
         self.create_image(810, 200, image=self.imagem_subtitulo, anchor='n')
         self.create_image(640, 320, image=self.imagem_deseja, anchor='n')
 
-        # 5) Cria o botão “PROFESSOR” usando Canvas + tag única
-        btn_prof_tag = 'btn_professor'
-        self.create_image(
-            640, 400,
-            image=self.imagem_professor,
-            anchor='n',
-            tags=(btn_prof_tag,)  # observe a vírgula!
-        )
-
-        # 6) Vincula o clique na tag ao método on_first_click
-        self.tag_bind(btn_prof_tag, '<Button-1>', self.on_first_click)
-
-        # 7) Se desejar também um botão “ALUNO”, proceda de forma análoga:
         btn_aluno_tag = 'btn_aluno'
         self.create_image(
-            640, 500,
+            640, 400,
             image=self.imagem_aluno,
             anchor='n',
             tags=(btn_aluno_tag,)
@@ -58,17 +46,20 @@ class TelaInicial(tk.Canvas):
 
         self.tag_bind(btn_aluno_tag, '<Button-1>', self.on_click_aluno)
 
-    def on_first_click(self, event):
-        #  Importe aqui, dentro do método, para evitar problemas de import circular
-        # from TelaMenuPrincipal import TelaMenuPrincipal
-        janela.janela.mudar_tela(TelaMenuPrincipal(self.master))
+        # 5) Cria o botão “PROFESSOR” usando Canvas + tag única
+        btn_prof_tag = 'btn_professor'
+        self.create_image(
+            640, 500,
+            image=self.imagem_professor,
+            anchor='n',
+            tags=(btn_prof_tag,)  # observe a vírgula!
+        )
+
+        # 6) Vincula o clique na tag ao método on_first_click
+        self.tag_bind(btn_prof_tag, '<Button-1>', self.on_click_professor)   
 
     def on_click_aluno(self, event):
-        pass
+        janela.janela.mudar_tela(TelaLoginAluno(self.master))
 
-
-# if __name__ == "__main__":
-#     root = tk.Tk()
-#     root.geometry("1280x720")
-#     TelaInicial(root)
-#     root.mainloop()
+    def on_click_professor(self, event):
+        janela.janela.mudar_tela(TelaLoginProfessor(self.master))

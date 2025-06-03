@@ -39,21 +39,16 @@ class TelaGameOver(tk.Canvas):
             tags=(btn_tag,)
         )
         self.create_text(640, 315,
-            text="REINICIAR JOGO",
+            text="VOLTAR AO MENU PRINCIPAL",
             font=("Californian FB", 20, "bold"),
             fill="black",
             anchor='n',
-            tags=(btn_tag,)            # **importante**!
+            tags=(btn_tag,)
         )
 
         # vincula clique na tag, usando lambda para descartar o event
         self.tag_bind(btn_tag, '<Button-1>', lambda e: self.reiniciar())
 
     def reiniciar(self):
-        # destrói a tela atual
-        # self.destroy()
-
-        # faz o import aqui, dentro do método, para evitar
-        # o ciclo de importações no topo do arquivo
         from TelaMenuPrincipal import TelaMenuPrincipal
         janela.janela.mudar_tela(TelaMenuPrincipal(self.master))

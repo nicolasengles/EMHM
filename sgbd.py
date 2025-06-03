@@ -20,10 +20,10 @@ sgbd = mysql.connector.connect(
 
 bd = sgbd.cursor()
 
-def autenticar_usuario(tipo_usuario: TipoUsuario, email : str, senha : str):
+def autenticar_usuario(tipo_usuario: int, email : str, senha : str):
     try:
         match tipo_usuario:
-            case TipoUsuario.ALUNO:
+            case 0:
                 bd.execute(f"SELECT * FROM aluno WHERE email = '{email}' AND senha = '{senha}';")
                 dados = bd.fetchall()[0]
 
@@ -42,7 +42,7 @@ def autenticar_usuario(tipo_usuario: TipoUsuario, email : str, senha : str):
                     )
                 )
 
-            case app.TipoUsuario.PROFESSOR:
+            case 0:
                 bd.execute(f"SELECT * FROM professor WHERE email = '{email}' AND senha = '{senha}';")
                 dados = bd.fetchall()[0]
 
@@ -52,11 +52,14 @@ def autenticar_usuario(tipo_usuario: TipoUsuario, email : str, senha : str):
                     senha=dados[2],
                     nome=dados[3]
                 )
-    
+
+        return None
+
     except IndexError:
-        print("Email e/ou senha incorretos")
+        return "Email e/ou senha incorretos"
     except Exception as erro:
         print(erro)
+        return "Ops! Algo deu errado!"
 
 def cadastrar_professor(nome : str, email : str, senha : str):
     if len(nome.split()) < 2:
