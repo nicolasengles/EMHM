@@ -13,7 +13,7 @@ class TelaManterPerguntas(tk.Canvas):
 
         # Título do painel
         self.create_text(640, 100,
-            text="Selecionar Entre as opções de Manutenção"
+            text="Selecionar Entre as opções de Manutenção",
             font=("Arial", 24, "bold"),
             fill="white",
             anchor='n'
