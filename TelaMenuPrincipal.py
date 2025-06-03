@@ -1,6 +1,7 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-from TelaPartida import TelaPartida
+from TelaIniciarPartida import TelaIniciarPartida
+import janela
 
 class TelaMenuPrincipal(tk.Canvas):
     def __init__(self, master, width=1280, height=720, highlightthickness=0):
@@ -44,14 +45,10 @@ class TelaMenuPrincipal(tk.Canvas):
         self.tag_bind(btn_tag, '<Button-1>', self.jogar)
 
     def jogar(self, event=None):
-        # destrói a TelaMenuPrincipal atual
-        self.destroy()
-        # abre a TelaPartida
-        TelaPartida(self.master)
+        janela.janela.mudar_tela(TelaIniciarPartida(self.master))
 
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    root.geometry("1280x720")
-    TelaMenuPrincipal(root)
-    root.mainloop()
+# if __name__ == "__main__":
+#     root = tk.Tk()
+#     root.geometry("1280x720")
+#     TelaMenuPrincipal(root)
+#     root.mainloop()

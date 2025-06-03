@@ -1,10 +1,19 @@
 import tkinter as tk
+from tkinter import messagebox
 from PIL import Image, ImageTk
-import sys
-from TelaGameOver import TelaGameOver
+# import sys
+# from TelaGameOver import TelaGameOver
+from pergunta import Pergunta
+# import janela
+import app
+import functools
+
+LETRAS = ('A', 'B', 'C', 'D', 'E')
 
 class TelaPartida(tk.Canvas):
-    def __init__(self, master, width=1280, height=720, highlightthickness=0):
+    def __init__(self, master, width=1280, height=720, highlightthickness=0, pergunta : Pergunta = None, pergunta_atual=1):
+        self.pergunta = pergunta
+
         # inicializa e empacota
         super().__init__(master, width=width, height=height, highlightthickness=highlightthickness)
         self.pack(fill="both", expand=True)
@@ -19,8 +28,10 @@ class TelaPartida(tk.Canvas):
         # 2) desenha o fundo e camadas de imagens
         self.create_image(0, 0, image=self.imagem_fundo, anchor='nw', tags=('bg',))
         self.create_image(1000, 36, image=self.imagem_nivel, anchor='n')
-        for x, y in [(380,280), (880,280), (880,380), (380,380), (630,480)]:
-            self.create_image(x, y, image=self.imagem_alt, anchor='n')
+        for i, (x, y) in enumerate([(380,280), (880,280), (880,380), (380,380), (630,480)]):
+            btn_tag = 'btn_pergunta_' + str(i)
+            self.create_image(x, y, image=self.imagem_alt, anchor='n', tags=(btn_tag))
+            self.tag_bind(btn_tag, '<Button-1>', functools.partial(self.responder_pergunta, resposta=i))
 
         # 3) desenha textos fixos
         self.create_text(1250, 32,
@@ -29,28 +40,32 @@ class TelaPartida(tk.Canvas):
             fill="green",
             anchor='ne')
         self.create_text(width/2, 190,
-            text="Qual foi o objetivo do Tratado de Versalhes?",
+            text=self.pergunta.enunciado,
             font=("Californian FB", 32, "bold"),
             fill="darkred",
             anchor='center')
         self.create_text(50, 35,
-            text="QUESTÃO 1",
+            text="PERGUNTA " + str(pergunta_atual),
             font=("Californian FB", 22, "bold"),
             fill="darkred",
             anchor='nw')
 
         # 4) desenha textos das alternativas
         alternativas = [
-            (380,310, "A) Impor sanções econômicas à Alemanha"),
-            (380,410, "B) Promover a paz mundial"),
-            (880,310, "C) Dividir a Alemanha em várias regiões"),
-            (880,410, "D) Estabelecer a Liga das Nações"),
-            (630,510, "E) Nenhuma das alternativas"),
+            (380,310, self.pergunta.alternativas[0]),
+            (380,410, self.pergunta.alternativas[1]),
+            (880,310, self.pergunta.alternativas[2]),
+            (880,410, self.pergunta.alternativas[3]),
+            (630,510, self.pergunta.alternativas[4]),
         ]
-        for x, y, txt in alternativas:
+
+        for i, (x, y, txt) in enumerate(alternativas):
+            btn_tag = 'btn_pergunta_' + str(i)
             self.create_text(x, y,
                 text=txt,
-                font=("Californian FB", 13, "bold"))
+                font=("Californian FB", 13, "bold"),
+                tags=(btn_tag))
+            self.tag_bind(btn_tag, '<Button-1>', functools.partial(self.responder_pergunta, resposta=i))
 
         # 5) cria o “botão” DESISTIR usando tag para imagem+texto
         btn_tag = 'btn_desistir'
@@ -68,18 +83,19 @@ class TelaPartida(tk.Canvas):
         # 6) vincula clique na tag para chamar handler
         self.tag_bind(btn_tag, '<Button-1>', self._on_desistir)
 
+    def _on_responder_pergunta(self, event, resposta):
+        res = messagebox.askquestion("Tem certeza?", "Você escolheu a opção:\n\""+ LETRAS[resposta] + ") " + self.pergunta.alternativas[resposta] + "\"\nDeseja confirmar?")
+        if res == "yes":
+            self.responder_pergunta(resposta=resposta)
+
+    def responder_pergunta(self, resposta):
+        if resposta == self.pergunta.resposta_correta:
+            app.app.partida.proxima_pergunta()
+            return
+        # app.app.partida.finalizar_partida()
+
     def _on_desistir(self, event):
-        # debug opcional:
-        print("Clique em DESISTIR detectado")
         self.desistir()
 
     def desistir(self):
-        # substitui a TelaPartida pela TelaGameOver
-        self.destroy()
-        TelaGameOver(self.master)
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    root.geometry("1280x720")
-    TelaPartida(root)
-    root.mainloop()
+        app.app.partida.desistir()
