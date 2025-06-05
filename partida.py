@@ -6,6 +6,9 @@ from TelaPartida import TelaPartida
 import random
 from TelaGameOver import TelaGameOver
 import app
+from TelaAjuda import TelaAjuda
+
+VALORES_PERGUNTAS = (1000, 10000, 100000, 445000)
 
 class Ajuda(Enum):
     DICA = 0
@@ -36,14 +39,45 @@ class Partida:
         if aux not in self.perguntas_previas:
             self.pergunta_atual = aux
             self.numero_pergunta_atual += 1
-            janela.janela.mudar_tela(TelaPartida(master=janela.janela.janela, pergunta=self.pergunta_atual, numero_pergunta_atual=self.numero_pergunta_atual, dificuldade=self.dificuldade))
+            self.exibir_tela_partida()
             return        
         self.proxima_pergunta()
+
+    def exibir_tela_partida(self):
+        janela.janela.mudar_tela(lambda master: TelaPartida(
+            master=master,
+            pergunta=self.pergunta_atual,
+            numero_pergunta_atual=self.numero_pergunta_atual,
+            dificuldade=self.dificuldade,
+            pontuacao=self.pontuacao
+        ))
     
     def proxima_rodada(self):
         self.dificuldade += 1
         self.perguntas = sgbd.buscar_perguntas(self.materia, self.dificuldade)
 
+    def exibir_tela_ajuda(self):
+        janela.janela.mudar_tela(TelaAjuda)
+
+    def acerto(self):
+        self.pontuacao += VALORES_PERGUNTAS[self.dificuldade]
+        self.proxima_pergunta()
+    
+    def erro(self):
+        janela.janela.mudar_tela(lambda master: TelaGameOver(master=master, pontuacao=VALORES_PERGUNTAS[self.dificuldade]))
+        app.app.finalizar_partida(VALORES_PERGUNTAS[self.dificuldade])
+
     def desistir(self):
-        janela.janela.mudar_tela(TelaGameOver(janela.janela.janela))
-        app.app.finalizar_partida()
+        janela.janela.mudar_tela(lambda master: TelaGameOver(master=master, pontuacao=self.pontuacao))
+        app.app.finalizar_partida(self.pontuacao)
+
+    def utilizar_ajuda(self, ajuda : Ajuda):
+        self.ajudas_disponiveis.remove(ajuda)
+        janela.janela.mudar_tela(lambda master: TelaPartida(
+            master=master,
+            pergunta=self.pergunta_atual,
+            numero_pergunta_atual=self.numero_pergunta_atual,
+            dificuldade=self.dificuldade,
+            pontuacao=self.pontuacao,
+            ajuda=ajuda
+        ))

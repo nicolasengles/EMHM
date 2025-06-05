@@ -82,12 +82,12 @@ class TelaLoginAluno(tk.Canvas):
             anchor='n',
             tags=(btn_sair_tag,)
         )
-        self.tag_bind(btn_sair_tag, '<Button-1>', lambda e: janela.janela.mudar_tela(TelaInicial.TelaInicial(self.master)))
+        self.tag_bind(btn_sair_tag, '<Button-1>', lambda e: janela.janela.mudar_tela(TelaInicial.TelaInicial))
 
     def entrar(self, email : str, senha : str):
         res = autenticar_usuario(0, email, senha) 
         if res == None:
-            janela.janela.mudar_tela(TelaMenuPrincipal(self.master))
+            janela.janela.mudar_tela(TelaMenuPrincipal)
         else:
             self.text_error = self.create_text(640, 457,
                 text=res,

@@ -2,7 +2,7 @@ import tkinter as tk
 from PIL import Image, ImageTk
 import janela
 
-class TelaGameOver(tk.Canvas):
+class TelaVitoria(tk.Canvas):
     def __init__(self, master, width=1280, height=720, highlightthickness=0, pontuacao=0):
         super().__init__(master, width=width, height=height, highlightthickness=highlightthickness)
         self.pack(fill="both", expand=True)
@@ -14,14 +14,14 @@ class TelaGameOver(tk.Canvas):
 
         self.create_image(0, 0, image=self.imagem_fundo, anchor=tk.NW)
         self.create_text(640, 100,
-            text="GAME OVER",
+            text="PARABÉNS!",
             font=("Californian FB", 48, "bold"),
             fill="darkred",
             anchor='n'
         )
         
         self.create_text(640, 200,
-            text="PONTUAÇÃO FINAL: " + str(pontuacao) + " reais",
+            text="Você é : " + str(pontuacao) + " reais",
             font=("Californian FB", 30, "bold"),
             fill="black",
             anchor='n'

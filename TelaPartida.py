@@ -1,63 +1,102 @@
 import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
-# import sys
-# from TelaGameOver import TelaGameOver
 from pergunta import Pergunta
-# import janela
 import app
-import functools
+import partida
+import janela
+from TelaConfirmarResposta import TelaConfirmarResposta
+from random import randint, choice
 
 LETRAS = ('A', 'B', 'C', 'D', 'E')
 
 class TelaPartida(tk.Canvas):
-    def __init__(self, master, width=1280, height=720, highlightthickness=0, pergunta : Pergunta = None, numero_pergunta_atual=1, dificuldade=0):
+    def __init__(self, master, width=1280, height=720, highlightthickness=0, pergunta : Pergunta = None, numero_pergunta_atual=1, dificuldade=0, pontuacao=0, ajuda=None):
         self.pergunta = pergunta
 
-        # inicializa e empacota
         super().__init__(master, width=width, height=height, highlightthickness=highlightthickness)
         self.pack(fill="both", expand=True)
 
-        # 1) carrega e mantém referências das imagens
         self.imagem_fundo = tk.PhotoImage(file='images/imagemfundo0.png')
-        # raw_nivel = Image.open('images/NivelDeDificuldade.png').resize((300, 20), Image.LANCZOS)
-        # self.imagem_nivel = ImageTk.PhotoImage(raw_nivel)
         raw_alt = Image.open('images/Alternativa.png').resize((330, 62), Image.LANCZOS)
-        self.imagem_alt = ImageTk.PhotoImage(raw_alt)
+        self.imagem_alt = ImageTk.PhotoImage(raw_alt) 
 
-        # 2) desenha o fundo e camadas de imagens
-        self.create_image(0, 0, image=self.imagem_fundo, anchor='nw', tags=('bg',))
-        # self.create_image(1000, 36, image=self.imagem_nivel, anchor='n')
-        for i, (x, y) in enumerate([(380,280), (880,280), (380,380), (880,380), (630,480)]):
-            btn_tag = 'btn_pergunta_' + str(i)
-            self.create_image(x, y, image=self.imagem_alt, anchor='n', tags=(btn_tag))
-            self.tag_bind(btn_tag, '<Button-1>', functools.partial(self._on_responder_pergunta, resposta=i))
+        if ajuda != partida.Ajuda.DUAS_OPCOES:
+            self.create_image(0, 0, image=self.imagem_fundo, anchor='nw', tags=('bg',))
+            for i, (x, y) in enumerate([(380,280), (880,280), (380,380), (880,380), (630,480)]):
+                btn_tag = 'btn_pergunta_' + str(i)
+                self.create_image(x, y, image=self.imagem_alt, anchor='n', tags=(btn_tag))
+                self.tag_bind(btn_tag, '<Button-1>', lambda event, resposta=i: self.responder_pergunta(event, resposta))
+                
+            alternativas = [
+                (380,310, self.pergunta.alternativas[0]),
+                (880,310, self.pergunta.alternativas[1]),
+                (380,410, self.pergunta.alternativas[2]),
+                (880,410, self.pergunta.alternativas[3]),
+                (630,510, self.pergunta.alternativas[4])
+            ]
 
-        # 3) desenha textos fixos
+            for i, (x, y, txt) in enumerate(alternativas):
+                btn_tag = 'btn_pergunta_' + str(i)
+                self.create_text(x, y,
+                    text=LETRAS[i] + ") " + txt,
+                    font=("Californian FB", 13, "bold"),
+                    tags=(btn_tag))
+                self.tag_bind(btn_tag, '<Button-1>', lambda event, resposta=i: self.responder_pergunta(event, resposta))
+
+        else:
+            opcoes = list(self.pergunta.alternativas)
+            opcoes.pop(self.pergunta.resposta_correta)
+            opcao_errada_disponivel = choice(opcoes)
+
+            self.create_image(0, 0, image=self.imagem_fundo, anchor='nw', tags=('bg',))
+            for i, (x, y) in enumerate([(380,280), (880,280), (380,380), (880,380), (630,480)]):
+                if i == self.pergunta.resposta_correta or self.pergunta.alternativas[i] == opcao_errada_disponivel:
+                    btn_tag = 'btn_pergunta_' + str(i)
+                    self.create_image(x, y, image=self.imagem_alt, anchor='n', tags=(btn_tag))
+                    self.tag_bind(btn_tag, '<Button-1>', lambda event, resposta=i: self.responder_pergunta(event, resposta))
+
+            alternativas = [
+                (380,310, self.pergunta.alternativas[0]),
+                (880,310, self.pergunta.alternativas[1]),
+                (380,410, self.pergunta.alternativas[2]),
+                (880,410, self.pergunta.alternativas[3]),
+                (630,510, self.pergunta.alternativas[4])
+            ]
+
+            for i, (x, y, txt) in enumerate(alternativas):
+                if i == self.pergunta.resposta_correta or self.pergunta.alternativas[i] == opcao_errada_disponivel:
+                    btn_tag = 'btn_pergunta_' + str(i)
+                    self.create_text(x, y,
+                        text=LETRAS[i] + ") " + txt,
+                        font=("Californian FB", 13, "bold"),
+                        tags=(btn_tag))
+                    self.tag_bind(btn_tag, '<Button-1>', lambda event, resposta=i: self.responder_pergunta(event, resposta))
+
         match dificuldade:
             case 0:
-                self.create_text(1250, 32,
+                self.create_text(1250, 30,
                     text="FÁCIL",
                     font=("IM FELL ENGLISH SC", 18, "bold"),
                     fill="green",
                     anchor='ne')
             case 1:
-                self.create_text(1250, 32,
+                self.create_text(1250, 30,
                     text="MÉDIA",
                     font=("IM FELL ENGLISH SC", 18, "bold"),
                     fill="yellow",
                     anchor='ne')
             case 2:
-                self.create_text(1250, 32,
+                self.create_text(1250, 30,
                     text="DIFÍCIL",
                     font=("IM FELL ENGLISH SC", 18, "bold"),
-                    fill="orange",
+                    fill="red",
                     anchor='ne')
             case 3:
-                self.create_text(1250, 32,
+                self.create_text(1250, 30,
                     text="PERGUNTA DO MILHÃO",
                     font=("IM FELL ENGLISH SC", 18, "bold"),
-                    fill="red",
+                    fill="purple",
                     anchor='ne')
         
         self.create_text(width/2, 190,
@@ -66,60 +105,104 @@ class TelaPartida(tk.Canvas):
             fill="darkred",
             anchor='center',
             width=1000
-            )
+        )
         
-        self.create_text(50, 35,
+        self.create_text(50, 30,
             text="PERGUNTA " + str(numero_pergunta_atual),
             font=("Californian FB", 22, "bold"),
             fill="darkred",
             anchor='nw')
+        
+        self.create_text(50, 650,
+            text="PRÊMIO: " + str(pontuacao),
+            font=("Californian FB", 22, "bold"),
+            fill="black",
+            anchor='nw')
 
-        # 4) desenha textos das alternativas
-        alternativas = [
-            (380,310, self.pergunta.alternativas[0]),
-            (880,310, self.pergunta.alternativas[1]),
-            (380,410, self.pergunta.alternativas[2]),
-            (880,410, self.pergunta.alternativas[3]),
-            (630,510, self.pergunta.alternativas[4])
-        ]
-
-        for i, (x, y, txt) in enumerate(alternativas):
-            btn_tag = 'btn_pergunta_' + str(i)
-            self.create_text(x, y,
-                text=txt,
-                font=("Californian FB", 13, "bold"),
-                tags=(btn_tag))
-            self.tag_bind(btn_tag, '<Button-1>', functools.partial(self._on_responder_pergunta, resposta=i))
-
-        # 5) cria o “botão” DESISTIR usando tag para imagem+texto
         btn_tag = 'btn_desistir'
-        self.create_image(630, 660,
+        self.create_image(1100, 660,
             image=self.imagem_alt,
             anchor='center',
             tags=(btn_tag,))
-        self.create_text(630, 660,
+        self.create_text(1100, 660,
             text="DESISTIR",
             font=("Californian FB", 18, "bold"),
             fill="darkred",
             anchor='center',
             tags=(btn_tag,))
+        self.tag_bind(btn_tag, '<Button-1>', self.desistir)
 
-        # 6) vincula clique na tag para chamar handler
-        self.tag_bind(btn_tag, '<Button-1>', self._on_desistir)
+        if ajuda == None:
+            btn_tag = 'btn_ajuda'
+            self.create_image(630, 620,
+                image=self.imagem_alt,
+                anchor='center',
+                tags=(btn_tag,)
+            )
+            self.create_text(630, 620,
+                text="PEDIR AJUDA",
+                font=("Californian FB", 18, "bold"),
+                fill="black",
+                anchor='center',
+                tags=(btn_tag,)
+            )
+            self.tag_bind(btn_tag, '<Button-1>', self._on_utilizar_ajuda)
+        elif ajuda == partida.Ajuda.DICA:
+            self.create_text(630, 620,
+                text="DICA: " + pergunta.dica,
+                font=("Californian FB", 14, "bold"),
+                fill="black",
+                anchor='center',
+                width=600
+            )
+        elif ajuda == partida.Ajuda.PLATEIA:
+            self.create_text(630, 620,
+                text="PLATEIA:",
+                font=("Californian FB", 14, "bold"),
+                fill="black",
+                anchor='center',
+                width=600
+            )
+            porcentagens = self.gerar_porcentagens_plateia()
+            text_plateia = ""
+            for i, porcentagem in enumerate(porcentagens):
+                text_plateia += LETRAS[i] + ") " + str(porcentagem) + "% "
+            self.create_text(630, 650,
+                text=text_plateia,
+                font=("Californian FB", 14, "bold"),
+                fill="black",
+                anchor='center',
+                width=600
+            )
 
-    def _on_responder_pergunta(self, event, resposta):
-        res = messagebox.askquestion("Tem certeza?", "Você escolheu a opção:\n\""+ LETRAS[resposta] + ") " + self.pergunta.alternativas[resposta] + "\"\nDeseja confirmar?")
-        if res == "yes":
-            self.responder_pergunta(resposta=resposta)
+    def gerar_porcentagens_plateia(self):
+        porcentagens = [0, 0, 0, 0, 0]
+        porcentagens[self.pergunta.resposta_correta] = randint(40, 100)
+        for i in range(len(porcentagens)):
+            if i == self.pergunta.resposta_correta:
+                continue
+            porcentagens[i] = randint(0, 100 - sum(porcentagens))
+        return porcentagens
 
-    def responder_pergunta(self, resposta):
-        if resposta == self.pergunta.resposta_correta:
-            app.app.partida.proxima_pergunta()
-            return
-        # app.app.partida.finalizar_partida()
+    def get_ajudas_disponiveis(self):
+        return app.app.partida.ajudas_disponiveis
 
-    def _on_desistir(self, event):
-        self.desistir()
+    def _on_utilizar_ajuda(self, event):
+        if len(app.app.partida.ajudas_disponiveis) < 1:
+            self.create_text(630, 700,
+                text="Você não possui mais ajudas disponíveis.",
+                font=("Californian FB", 12, "bold"),
+                fill="red",
+                anchor='center',
+            )
+        app.app.partida.exibir_tela_ajuda()
 
-    def desistir(self):
+    def responder_pergunta(self, event, resposta):
+        janela.janela.mudar_tela(lambda master: TelaConfirmarResposta(
+            master=master,
+            resposta=self.pergunta.alternativas[resposta],
+            correta=(resposta == self.pergunta.resposta_correta)
+        ))
+
+    def desistir(self, event):
         app.app.partida.desistir()

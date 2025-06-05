@@ -45,10 +45,4 @@ class TelaMenuPrincipal(tk.Canvas):
         self.tag_bind(btn_tag, '<Button-1>', self.jogar)
 
     def jogar(self, event=None):
-        janela.janela.mudar_tela(TelaIniciarPartida(self.master))
-
-# if __name__ == "__main__":
-#     root = tk.Tk()
-#     root.geometry("1280x720")
-#     TelaMenuPrincipal(root)
-#     root.mainloop()
+        janela.janela.mudar_tela(TelaIniciarPartida)

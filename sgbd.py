@@ -330,3 +330,10 @@ def excluir_turma(turma : Turma):
     bd.execute(f"DELETE FROM turma WHERE id = {turma.id}")
     sgbd.commit()
     app.turmas.remove(turma)
+
+def incrementar_pontuacao_aluno(aluno : Aluno, pontuacao : int):
+    bd.execute(f"SELECT pontuacao FROM aluno WHERE id = {aluno.id};")
+    pontuacao_antiga = bd.fetchall()[0][0]
+    pontuacao_nova = pontuacao_antiga + pontuacao
+    bd.execute(f"UPDATE aluno SET pontuacao = {pontuacao_nova} WHERE id = {aluno.id};")
+    sgbd.commit()

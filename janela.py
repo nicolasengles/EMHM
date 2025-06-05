@@ -16,6 +16,6 @@ class Janela():
 
     def mudar_tela(self, tela_nova):
         self.tela_atual.destroy()
-        self.tela_atual = tela_nova
+        self.tela_atual = tela_nova(self.janela)
 
 janela = Janela()

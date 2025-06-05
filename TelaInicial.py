@@ -59,7 +59,7 @@ class TelaInicial(tk.Canvas):
         self.tag_bind(btn_prof_tag, '<Button-1>', self.on_click_professor)   
 
     def on_click_aluno(self, event):
-        janela.janela.mudar_tela(TelaLoginAluno(self.master))
+        janela.janela.mudar_tela(TelaLoginAluno)
 
     def on_click_professor(self, event):
-        janela.janela.mudar_tela(TelaLoginProfessor(self.master))
+        janela.janela.mudar_tela(TelaLoginProfessor)

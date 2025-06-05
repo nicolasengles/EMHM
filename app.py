@@ -1,9 +1,8 @@
-# from enum import Enum
 from aluno import Aluno
 from professor import Professor
 from turma import Turma
 from partida import Partida
-# from janela import Janela
+import sgbd
 
 class App():
     def __init__(self):
@@ -21,7 +20,9 @@ class App():
     def iniciar_partida(self, materia):
         self.partida = Partida(materia)
 
-    def finalizar_partida(self):
+    def finalizar_partida(self, pontuacao : int):
         self.partida = None
+        if pontuacao > 0:
+            sgbd.incrementar_pontuacao_aluno(self.usuario, pontuacao)
 
 app = App()
