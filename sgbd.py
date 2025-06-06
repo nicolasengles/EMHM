@@ -42,7 +42,7 @@ def autenticar_usuario(tipo_usuario: int, email : str, senha : str):
                     )
                 )
 
-            case 0:
+            case 1:
                 bd.execute(f"SELECT * FROM professor WHERE email = '{email}' AND senha = '{senha}';")
                 dados = bd.fetchall()[0]
 

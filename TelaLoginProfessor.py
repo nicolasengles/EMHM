@@ -1,13 +1,14 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-from datetime import datetime
+from sgbd import autenticar_usuario
+import janela
+import TelaInicial
+from DbManagement import DbManagement
 
 class TelaLoginProfessor(tk.Canvas):
     def __init__(self, master, width=1280, height=720, highlightthickness=0):
         super().__init__(master, width=width, height=height, highlightthickness=highlightthickness)
         self.pack(fill="both", expand=True)
-
-        # Carrega e desenha o fundo
 
         raw_fundo = Image.open(r'images\black-solid-background-2920-x-1642-jk98dr7udfcq3hqj.jpg')\
             .resize((width, height), Image.LANCZOS)
@@ -16,29 +17,10 @@ class TelaLoginProfessor(tk.Canvas):
         self.create_image(0, 0, image=self.imagem_fundo, anchor=tk.NW)
 
         # 1º Entry: “Digite seu nome”
-        placeholder_nome = "Digite seu e-mail:"
-        entry_nome = tk.Entry(self, font=("Arial", 16), fg="gray")
-        entry_nome.insert(0, placeholder_nome)
-        self.create_window(640, 370, window=entry_nome, anchor='n')
-
-        def on_focus_in_nome(event):
-            if entry_nome.get() == placeholder_nome:
-                entry_nome.delete(0, tk.END)
-                entry_nome.config(fg="black")
-
-        def on_focus_out_nome(event):
-            if entry_nome.get().strip() == "":
-                entry_nome.insert(0, placeholder_nome)
-                entry_nome.config(fg="gray")
-
-        entry_nome.bind("<FocusIn>", on_focus_in_nome)
-        entry_nome.bind("<FocusOut>", on_focus_out_nome)
-
-        # 2º Entry: “Digite seu e-mail”
-        placeholder_email = "Digite sua senha:"
+        placeholder_email = "Digite seu Email (@sistemapoliedro.com):"
         entry_email = tk.Entry(self, font=("Arial", 16), fg="gray")
         entry_email.insert(0, placeholder_email)
-        self.create_window(640, 420, window=entry_email, anchor='n')
+        self.create_window(640, 370, window=entry_email, anchor='n', width=500)
 
         def on_focus_in_email(event):
             if entry_email.get() == placeholder_email:
@@ -53,7 +35,23 @@ class TelaLoginProfessor(tk.Canvas):
         entry_email.bind("<FocusIn>", on_focus_in_email)
         entry_email.bind("<FocusOut>", on_focus_out_email)
 
-        # text
+        placeholder_senha = "Digite sua senha:"
+        entry_senha = tk.Entry(self, font=("Arial", 16), fg="gray", show='*')
+        entry_senha.insert(0, placeholder_senha)
+        self.create_window(640, 420, window=entry_senha, anchor='n', width=500)
+
+        def on_focus_in_senha(event):
+            if entry_senha.get() == placeholder_senha:
+                entry_senha.delete(0, tk.END)
+                entry_senha.config(fg="black")
+
+        def on_focus_out_senha(event):
+            if entry_senha.get().strip() == "":
+                entry_senha.insert(0, placeholder_senha)
+                entry_senha.config(fg="gray")
+
+        entry_senha.bind("<FocusIn>", on_focus_in_senha)
+        entry_senha.bind("<FocusOut>", on_focus_out_senha)
 
         self.create_text(640, 300,
             text="PAINEL DO PROFESSOR",
@@ -62,17 +60,6 @@ class TelaLoginProfessor(tk.Canvas):
             anchor='n'
         )
 
-        # Botão “SAIR”  
-        btn_sair_tag = 'btn_sair'
-        self.create_text(640, 520,
-            text="SAIR",
-            font=("Arial", 18, "bold"),
-            fill="red",
-            anchor='n',
-            tags=(btn_sair_tag,)
-        )   
-
-        # Botao "ENTRAR"	
         btn_entrar_tag = 'btn_entrar'
         self.create_text(640, 485,
             text="ENTRAR",
@@ -81,19 +68,29 @@ class TelaLoginProfessor(tk.Canvas):
             anchor='n',
             tags=(btn_entrar_tag,)
         )
+        self.tag_bind(btn_entrar_tag, '<Button-1>', lambda event: self.entrar(entry_email.get(), entry_senha.get()))
 
-        # Horario 
-
-        self.create_text(640, 250,
-            text="00:00",
-            font=("Arial", 16),
-            fill="white",
-            anchor='n'
+        btn_sair_tag = 'btn_sair'
+        self.create_text(640, 520,
+            text="SAIR",
+            font=("Arial", 18, "bold"),
+            fill="red",
+            anchor='n',
+            tags=(btn_sair_tag,)
         )
+        self.tag_bind(btn_sair_tag, '<Button-1>', self.voltar)
 
+    def entrar(self, email : str, senha : str):
+        res = autenticar_usuario(1, email, senha) 
+        if res == None:
+            janela.janela.mudar_tela(DbManagement)
+        else:
+            self.text_error = self.create_text(640, 620,
+                text=res,
+                font=("Californian FB", 12, "bold"),
+                fill="red",
+                anchor='n'
+            )
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    root.geometry("1280x720")
-    TelaLoginProfessor(root)
-    root.mainloop()
+    def voltar(self, event):
+        janela.janela.mudar_tela(TelaInicial.TelaInicial)
