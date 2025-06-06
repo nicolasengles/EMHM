@@ -62,6 +62,8 @@ class TelaConfirmarResposta(tk.Canvas):
     def confirmar(self, event):
         if self.correta:
             app.app.partida.acerto()
+            return
+        app.app.partida.erro()
 
     def voltar(self, event):
         app.app.partida.exibir_tela_partida()

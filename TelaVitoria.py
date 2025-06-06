@@ -3,7 +3,7 @@ from PIL import Image, ImageTk
 import janela
 
 class TelaVitoria(tk.Canvas):
-    def __init__(self, master, width=1280, height=720, highlightthickness=0, pontuacao=0):
+    def __init__(self, master, width=1280, height=720, highlightthickness=0):
         super().__init__(master, width=width, height=height, highlightthickness=highlightthickness)
         self.pack(fill="both", expand=True)
 
@@ -21,7 +21,7 @@ class TelaVitoria(tk.Canvas):
         )
         
         self.create_text(640, 200,
-            text="Você é : " + str(pontuacao) + " reais",
+            text="VOCÊ SE TORNOU UM MILIONÁRIO!",
             font=("Californian FB", 30, "bold"),
             fill="black",
             anchor='n'
