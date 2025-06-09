@@ -1,11 +1,11 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-from sgbd import autenticar_usuario
+from sgbd import cadastrar_professor, autenticar_usuario
 import janela
 import TelaInicialProfessor
 from TelaPrincipalPainel import TelaPrincipalPainel
 
-class TelaLoginProfessor(tk.Canvas):
+class TelaCadastroProfessor(tk.Canvas):
     def __init__(self, master, width=1280, height=720, highlightthickness=0):
         super().__init__(master, width=width, height=height, highlightthickness=highlightthickness)
         self.pack(fill="both", expand=True)
@@ -16,12 +16,30 @@ class TelaLoginProfessor(tk.Canvas):
         self.imagem_fundo = ImageTk.PhotoImage(raw_fundo)
         self.create_image(0, 0, image=self.imagem_fundo, anchor=tk.NW)
 
-        self.create_text(640, 300,
+        self.create_text(640, 250,
             text="PAINEL DO PROFESSOR",
             font=("Arial", 24, "bold"),
             fill="white",
             anchor='n'
         )
+
+        placeholder_nome = "Digite seu nome:"
+        entry_nome = tk.Entry(self, font=("Arial", 16), fg="gray")
+        entry_nome.insert(0, placeholder_nome)
+        self.create_window(640, 320, window=entry_nome, anchor='n', width=500)
+
+        def on_focus_in_nome(event):
+            if entry_nome.get() == placeholder_nome:
+                entry_nome.delete(0, tk.END)
+                entry_nome.config(fg="black")
+
+        def on_focus_out_nome(event):
+            if entry_nome.get().strip() == "":
+                entry_nome.insert(0, placeholder_nome)
+                entry_nome.config(fg="gray")
+
+        entry_nome.bind("<FocusIn>", on_focus_in_nome)
+        entry_nome.bind("<FocusOut>", on_focus_out_nome)
 
         placeholder_email = "Digite seu Email (@sistemapoliedro.com):"
         entry_email = tk.Entry(self, font=("Arial", 16), fg="gray")
@@ -59,15 +77,15 @@ class TelaLoginProfessor(tk.Canvas):
         entry_senha.bind("<FocusIn>", on_focus_in_senha)
         entry_senha.bind("<FocusOut>", on_focus_out_senha)
 
-        btn_entrar_tag = 'btn_entrar'
+        btn_cadastrar_tag = 'btn_cadastrar'
         self.create_text(640, 485,
-            text="ENTRAR",
+            text="FAZER CADASTRO",
             font=("Arial", 18, "bold"),
             fill="light green",
             anchor='n',
-            tags=(btn_entrar_tag,)
+            tags=(btn_cadastrar_tag)
         )
-        self.tag_bind(btn_entrar_tag, '<Button-1>', lambda event: self.entrar(entry_email.get(), entry_senha.get()))
+        self.tag_bind(btn_cadastrar_tag, '<Button-1>', lambda event: self.cadastrar(entry_nome.get(), entry_email.get(), entry_senha.get()))
 
         btn_sair_tag = 'btn_sair'
         self.create_text(640, 520,
@@ -75,16 +93,16 @@ class TelaLoginProfessor(tk.Canvas):
             font=("Arial", 18, "bold"),
             fill="red",
             anchor='n',
-            tags=(btn_sair_tag,)
+            tags=(btn_sair_tag)
         )
         self.tag_bind(btn_sair_tag, '<Button-1>', self.voltar)
 
-    def entrar(self, email : str, senha : str):
-        res = autenticar_usuario(1, email, senha) 
+    def cadastrar(self, nome : str, email : str, senha : str):
+        res = cadastrar_professor(nome, email, senha) 
         if res == None:
             janela.janela.mudar_tela(TelaPrincipalPainel)
         else:
-            self.text_error = self.create_text(640, 620,
+            self.text_error = self.create_text(640, 460,
                 text=res,
                 font=("Californian FB", 12, "bold"),
                 fill="red",

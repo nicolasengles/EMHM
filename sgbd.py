@@ -6,7 +6,7 @@ from pergunta import Pergunta
 from turma import Turma
 from professor import Professor
 import app
-from enums import TipoUsuario
+# from enums import TipoUsuario
 
 load_dotenv('.env')
 
@@ -46,7 +46,7 @@ def autenticar_usuario(tipo_usuario: int, email : str, senha : str):
                 bd.execute(f"SELECT * FROM professor WHERE email = '{email}' AND senha = '{senha}';")
                 dados = bd.fetchall()[0]
 
-                app.usuario = Professor(
+                app.app.usuario = Professor(
                     id=dados[0],
                     email=dados[1],
                     senha=dados[2],
@@ -63,43 +63,34 @@ def autenticar_usuario(tipo_usuario: int, email : str, senha : str):
 
 def cadastrar_professor(nome : str, email : str, senha : str):
     if len(nome.split()) < 2:
-        print("Por favor, insira nome e sobrenome")
-        return
+        return "Por favor, insira nome e sobrenome"
     
     if len(nome) > 100:
-        print("O nome deve ter no máximo 100 caracteres")
-        return
+        return "O nome deve ter no máximo 100 caracteres"
     
     if email[-20:] != "@sistemapoliedro.com":
-        print("Email inválido. Por favor, utilize seu email institucional (@sistemapoliedro.com)")
-        return
+        return "Email inválido. Por favor, utilize seu email institucional (@sistemapoliedro.com)"
     
     if len(email) > 100:
-        print("O email deve ter no máximo 100 caracteres")
-        return
+        return "O email deve ter no máximo 100 caracteres"
 
     if len(senha) < 8:
-        print("A senha deve conter no mínimo 8 caracteres")
-        return
+        return "A senha deve conter no mínimo 8 caracteres"
     
     if len(senha) > 100:
-        print("A senha deve conter no máximo 100 caracteres")
-        return
+        return "A senha deve conter no máximo 100 caracteres"
     
     bd.execute(f"SELECT * FROM professor WHERE email = '{email}';")
     if len(bd.fetchall()) > 0:
-        print("Já existe uma conta associada a este email.")
-        return
+        return "Já existe uma conta associada a este email."
     
     try:
         bd.execute(f"INSERT INTO professor (nome, email, senha) VALUES ('{nome}', '{email}', '{senha}');")
         sgbd.commit()
+        autenticar_usuario(1, email=email, senha=senha)
     except Exception as erro:
-        print("Ops! Algo deu errado.")
         print(erro)
-        return
-    
-    autenticar_usuario(app.TipoUsuario.PROFESSOR, email=email, senha=senha)
+        return "Ops! Algo deu errado."
 
 def editar_professor(id : int, nome : str, email : str, senha : str):
     if len(nome.split()) < 2:
@@ -148,7 +139,7 @@ def buscar_alunos():
     alunos = []
     for resultado in resultados:
             turma = None
-            for i in app.turmas:
+            for i in app.app.turmas:
                 if i.id == resultado[5]:
                     turma = i
             
@@ -158,7 +149,7 @@ def buscar_alunos():
                 turma = Turma(
                     id=dados[0],
                     nome=dados[1],
-                    professor_responsavel=app.usuario
+                    professor_responsavel=app.app.usuario
                 )
 
             aluno = Aluno(
@@ -307,7 +298,7 @@ def buscar_turmas():
             turma = Turma(
                 id=resultado[0],
                 nome=resultado[1],
-                professor_responsavel=app.usuario
+                professor_responsavel=app.app.usuario
             )
             turmas.append(turma)
     return turmas
@@ -323,13 +314,13 @@ def cadastrar_turma(nome : str, id_professor : int):
 def editar_turma(id : int, nome : str):
     bd.execute(f"UPDATE turma SET nome = '{nome}' WHERE id = {id};")
     sgbd.commit()
-    turma = [turma for turma in app.turmas if turma.id == id][0]
+    turma = [turma for turma in app.app.turmas if turma.id == id][0]
     turma.nome = nome
 
 def excluir_turma(turma : Turma):
     bd.execute(f"DELETE FROM turma WHERE id = {turma.id}")
     sgbd.commit()
-    app.turmas.remove(turma)
+    app.app.turmas.remove(turma)
 
 def incrementar_pontuacao_aluno(aluno : Aluno, pontuacao : int):
     bd.execute(f"SELECT pontuacao FROM aluno WHERE id = {aluno.id};")

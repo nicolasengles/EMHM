@@ -1,7 +1,7 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 import janela
-from TelaLoginProfessor import TelaLoginProfessor
+from TelaInicialProfessor import TelaInicialProfessor
 from TelaLoginAluno import TelaLoginAluno
 
 class TelaInicial(tk.Canvas):
@@ -62,4 +62,4 @@ class TelaInicial(tk.Canvas):
         janela.janela.mudar_tela(TelaLoginAluno)
 
     def on_click_professor(self, event):
-        janela.janela.mudar_tela(TelaLoginProfessor)
+        janela.janela.mudar_tela(TelaInicialProfessor)
