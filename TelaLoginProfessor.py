@@ -10,7 +10,7 @@ class TelaLoginProfessor(tk.Canvas):
         super().__init__(master, width=width, height=height, highlightthickness=highlightthickness)
         self.pack(fill="both", expand=True)
 
-        raw_fundo = Image.open(r'images\black-solid-background-2920-x-1642-jk98dr7udfcq3hqj.jpg')\
+        raw_fundo = Image.open(r'images/black-solid-background-2920-x-1642-jk98dr7udfcq3hqj.jpg')\
             .resize((width, height), Image.LANCZOS)
         
         self.imagem_fundo = ImageTk.PhotoImage(raw_fundo)

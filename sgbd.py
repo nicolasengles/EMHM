@@ -8,14 +8,14 @@ from professor import Professor
 import app
 from enums import TipoUsuario
 
-load_dotenv()
+load_dotenv('.env')
 
 sgbd = mysql.connector.connect(
-    host=getenv("HOST"),
-    port=int(getenv("PORT")),
-    user=getenv("USER"),
-    password=getenv("PASSWORD"),
-    database=getenv("DATABASE")
+    host=getenv("DB_HOST"),
+    port=int(getenv("DB_PORT")),
+    user=getenv("DB_USER"),
+    password=getenv("DB_PASSWORD"),
+    database=getenv("DB_DATABASE")
 )
 
 bd = sgbd.cursor()
