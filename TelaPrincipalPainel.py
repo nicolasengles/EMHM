@@ -1,6 +1,10 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 import app
+import janela
+from TelaManterPerguntas import TelaManterPerguntas
+from TelaManterTurmas import TelaManterTurmas
+from TelaManterAlunos import TelaManterAlunos
 
 class TelaPrincipalPainel(tk.Canvas):
     def __init__(self, master, width=1280, height=720, highlightthickness=0):
@@ -34,6 +38,7 @@ class TelaPrincipalPainel(tk.Canvas):
             anchor='n',
             tags=(btn_perguntas_tag,)
         )
+        self.tag_bind(btn_perguntas_tag, '<Button-1>', self.on_btn_perguntas_click) 
 
         btn_turmas_tag = 'btn_turmas'
         self.create_text(640, 400,
@@ -43,3 +48,25 @@ class TelaPrincipalPainel(tk.Canvas):
             anchor='n',
             tags=(btn_turmas_tag,)
         )
+        self.tag_bind(btn_turmas_tag, '<Button-1>', self.on_btn_turmas_click)  # Placeholder for future functionality
+
+        btn_alunos_tag = 'btn_alunos'
+        self.create_text(640, 500,
+            text="GERENCIAR ALUNOS",
+            font=("Arial", 18, "bold"),
+            fill="white",
+            anchor='n',
+            tags=(btn_alunos_tag,)
+        )
+        self.tag_bind(btn_alunos_tag, '<Button-1>', self.on_btn_alunos_click)
+    # func
+
+    def on_btn_perguntas_click(self, callback):
+        janela.janela.mudar_tela(TelaManterPerguntas)
+
+    def on_btn_turmas_click(self, callback):
+        janela.janela.mudar_tela(TelaManterTurmas) 
+
+    def on_btn_alunos_click(self, callback):
+        janela.janela.mudar_tela(TelaManterAlunos)  # Placeholder for future functionality 
+    

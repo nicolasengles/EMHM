@@ -242,33 +242,39 @@ def excluir_aluno(aluno : Aluno):
     sgbd.commit()
 
 def buscar_perguntas(materia, dificuldade):
-    if dificuldade == -1:
-        bd.execute(f"SELECT * FROM pergunta;")
-    elif materia == 2:
-        bd.execute(f"SELECT * FROM pergunta WHERE dificuldade = {dificuldade};")
-    else:
-        bd.execute(f"SELECT * FROM pergunta WHERE materia = '{materia}' AND dificuldade = {dificuldade};")
+    query = "SELECT * FROM pergunta"
+    params = []
+    condicoes = []
 
+    # Filtra matéria (exceto código 2 = Todas)
+    if materia != 2:
+        condicoes.append("materia = %s")
+        params.append(materia)
+    # Filtra dificuldade (exceto -1 = Todas)
+    if dificuldade != -1:
+        condicoes.append("dificuldade = %s")
+        params.append(dificuldade)
+
+    # Se houver alguma condição, anexa ao WHERE
+    if condicoes:
+        query += " WHERE " + " AND ".join(condicoes)
+
+    # Executa com parâmetros para evitar SQL injection
+    bd.execute(query, tuple(params))
     resultados = bd.fetchall()
-    
+
+    # Mapeia resultados em objetos Pergunta
     perguntas = []
-    for resultado in resultados:
-            pergunta = Pergunta(
-                id=resultado[0],
-                materia=resultado[1],
-                dificuldade=resultado[2],
-                enunciado=resultado[3],
-                dica=resultado[4],
-                resposta_correta=resultado[5],
-                alternativas=[
-                    resultado[6],
-                    resultado[7],
-                    resultado[8],
-                    resultado[9],
-                    resultado[10]
-                ]
-            )
-            perguntas.append(pergunta)
+    for r in resultados:
+        perguntas.append(Pergunta(
+            id=r[0],
+            materia=r[1],
+            dificuldade=r[2],
+            enunciado=r[3],
+            dica=r[4],
+            resposta_correta=r[5],
+            alternativas=[r[6], r[7], r[8], r[9], r[10]]
+        ))
     return perguntas
 
 def cadastrar_pergunta(materia : int, dificuldade : int, enunciado : str, dica : str, resposta_correta : int, alternativas : tuple[str]):
