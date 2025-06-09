@@ -1,5 +1,6 @@
 import tkinter as tk
 from TelaInicial import TelaInicial
+
 class Janela():
     def __init__(self):
         self.janela = tk.Tk()
