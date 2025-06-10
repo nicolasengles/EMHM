@@ -64,11 +64,11 @@ class Partida:
         self.proxima_pergunta()
     
     def erro(self):
-        janela.janela.mudar_tela(lambda master: TelaGameOver(master=master, pontuacao=self.pontuacao))
+        janela.janela.mudar_tela(lambda master: TelaGameOver(master=master, pontuacao=VALORES_PERGUNTAS[self.dificuldade]))
         app.app.finalizar_partida(VALORES_PERGUNTAS[self.dificuldade])
 
     def desistir(self):
-        janela.janela.mudar_tela(lambda master: TelaGameOver(master=master, pontuacao=VALORES_PERGUNTAS[self.dificuldade]))
+        janela.janela.mudar_tela(lambda master: TelaGameOver(master=master, pontuacao=self.pontuacao))
         app.app.finalizar_partida(self.pontuacao)
 
     def utilizar_ajuda(self, ajuda : Ajuda):

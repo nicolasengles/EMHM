@@ -164,9 +164,3 @@ class PerguntaForm(tk.Toplevel):
             dados['id'] = self.pergunta.id
         self.callback(dados)
         self.destroy()
-
-# Exemplo de uso
-if __name__ == '__main__':
-    root = tk.Tk()
-    TelaManterPerguntas(root)
-    root.mainloop()

@@ -6,9 +6,7 @@ from TelaLoginAluno import TelaLoginAluno
 
 class TelaInicial(tk.Canvas):
     def __init__(self, master, width=1280, height=720, highlightthickness=0):
-        # 1) Inicializa o Canvas com tamanho definido
         super().__init__(master, width=width, height=height, highlightthickness=highlightthickness)
-        # 2) Empacota o Canvas antes de desenhar
         self.pack(fill="both", expand=True)
 
         # 3) Carrega as imagens e armazena em atributos de instância
@@ -18,10 +16,10 @@ class TelaInicial(tk.Canvas):
         raw_titulo = Image.open("images/EXPEDICAO_DO_MILHAO.png").resize((750, 75), Image.LANCZOS)
         self.imagem_titulo = ImageTk.PhotoImage(raw_titulo)
 
-        raw_subtitulo = Image.open("images/HistoriaseMapas.png").resize((500, 65), Image.LANCZOS)
+        raw_subtitulo = Image.open("images/HistoriaseMapas.png").resize((550, 50), Image.LANCZOS)
         self.imagem_subtitulo = ImageTk.PhotoImage(raw_subtitulo)
 
-        raw_deseja = Image.open("images/DesejaLogar.png").resize((300, 50), Image.LANCZOS)
+        raw_deseja = Image.open("images/DesejaLogar.png").resize((450, 50), Image.LANCZOS)
         self.imagem_deseja = ImageTk.PhotoImage(raw_deseja)
 
         raw_prof = Image.open('images/FrameProfessor.png').resize((300, 80), Image.LANCZOS)
@@ -33,7 +31,7 @@ class TelaInicial(tk.Canvas):
         # 4) Desenha a tela: fundo, título, subtítulo e aviso “Deseja Logar?”
         self.create_image(0, 0, image=self.imagem_fundo, anchor=tk.NW)
         self.create_image(640, 100, image=self.imagem_titulo, anchor='n')
-        self.create_image(810, 200, image=self.imagem_subtitulo, anchor='n')
+        self.create_image(810, 175, image=self.imagem_subtitulo, anchor='n')
         self.create_image(640, 320, image=self.imagem_deseja, anchor='n')
 
         btn_aluno_tag = 'btn_aluno'

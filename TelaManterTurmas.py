@@ -20,8 +20,7 @@ class TelaManterTurmas(tk.Canvas):
         self.pack(fill="both", expand=True)
 
         # Carrega fundo e textos
-        raw = Image.open(r'images\black-solid-background-2920-x-1642-jk98dr7udfcq3hqj.jpg')\
-            .resize((width, height), Image.LANCZOS)
+        raw = Image.open('images/imagemfundo1.jpg').resize((width, height), Image.LANCZOS)
         self.bg = ImageTk.PhotoImage(raw)
         self.create_image(0, 0, image=self.bg, anchor='nw')
         self.create_text(640, 100, text="Manutenção de Turmas", font=("Arial",24,"bold"), fill="white", anchor='n')
@@ -129,9 +128,3 @@ class TurmaForm(tk.Toplevel):
             dados['id'] = self.turma.id
         self.callback(dados)
         self.destroy()
-
-
-if __name__ == '__main__':
-    root = tk.Tk()
-    TelaManterTurmas(root)
-    root.mainloop()

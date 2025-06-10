@@ -159,10 +159,3 @@ class AlunoForm(tk.Toplevel):
             dados['id'] = self.aluno.id
         self.callback(dados)
         self.destroy()
-
-
-# para testes independentes
-if __name__ == '__main__':
-    root = tk.Tk()
-    TelaManterAlunos(root)
-    root.mainloop()
