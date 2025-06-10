@@ -1,6 +1,5 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-from datetime import datetime
 from sgbd import autenticar_usuario
 import janela
 from TelaMenuPrincipal import TelaMenuPrincipal
@@ -84,14 +83,16 @@ class TelaLoginAluno(tk.Canvas):
         )
         self.tag_bind(btn_sair_tag, '<Button-1>', lambda e: janela.janela.mudar_tela(TelaInicial.TelaInicial))
 
+        self.text_error = self.create_text(640, 457,
+                text="",
+                font=("Californian FB", 12, "bold"),
+                fill="red",
+                anchor='n'
+            )
+
     def entrar(self, email : str, senha : str):
         res = autenticar_usuario(0, email, senha) 
         if res == None:
             janela.janela.mudar_tela(TelaMenuPrincipal)
         else:
-            self.text_error = self.create_text(640, 457,
-                text=res,
-                font=("Californian FB", 12, "bold"),
-                fill="red",
-                anchor='n'
-            )
+            self.itemconfig(self.text_error, text=res)

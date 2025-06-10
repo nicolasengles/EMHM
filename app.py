@@ -1,7 +1,7 @@
 from aluno import Aluno
 from professor import Professor
 from turma import Turma
-from partida import Partida
+import partida
 import sgbd
 
 class App():
@@ -18,7 +18,7 @@ class App():
             return None
         
     def iniciar_partida(self, materia):
-        self.partida = Partida(materia)
+        self.partida = partida.Partida(materia)
 
     def finalizar_partida(self, pontuacao : int):
         self.partida = None

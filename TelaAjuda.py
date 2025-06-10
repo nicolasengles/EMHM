@@ -9,7 +9,6 @@ class TelaAjuda(tk.Canvas):
         super().__init__(master)
         self.pack(fill="both", expand=True)
 
-        # 3) Carrega as imagens e armazena em atributos de instância
         img_fundo = Image.open('images/imagemfundo0.png')
         raw_alt = Image.open('images/Alternativa.png').resize((330, 62), Image.LANCZOS)
         self.imagem_alt = ImageTk.PhotoImage(raw_alt)

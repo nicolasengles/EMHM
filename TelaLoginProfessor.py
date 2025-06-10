@@ -79,17 +79,19 @@ class TelaLoginProfessor(tk.Canvas):
         )
         self.tag_bind(btn_sair_tag, '<Button-1>', self.voltar)
 
+        self.text_error = self.create_text(640, 620,
+                text="",
+                font=("Californian FB", 12, "bold"),
+                fill="red",
+                anchor='n'
+            )
+
     def entrar(self, email : str, senha : str):
         res = autenticar_usuario(1, email, senha) 
         if res == None:
             janela.janela.mudar_tela(TelaPrincipalPainel)
         else:
-            self.text_error = self.create_text(640, 620,
-                text=res,
-                font=("Californian FB", 12, "bold"),
-                fill="red",
-                anchor='n'
-            )
+            self.itemconfig(self.text_error, text=res)
 
     def voltar(self, event):
         janela.janela.mudar_tela(TelaInicialProfessor.TelaInicialProfessor)

@@ -1,6 +1,6 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-from sgbd import cadastrar_professor, autenticar_usuario
+from sgbd import cadastrar_professor
 import janela
 import TelaInicialProfessor
 from TelaPrincipalPainel import TelaPrincipalPainel
@@ -97,17 +97,19 @@ class TelaCadastroProfessor(tk.Canvas):
         )
         self.tag_bind(btn_sair_tag, '<Button-1>', self.voltar)
 
+        self.text_error = self.create_text(640, 460,
+                text="",
+                font=("Californian FB", 12, "bold"),
+                fill="red",
+                anchor='n'
+            )
+
     def cadastrar(self, nome : str, email : str, senha : str):
         res = cadastrar_professor(nome, email, senha) 
         if res == None:
             janela.janela.mudar_tela(TelaPrincipalPainel)
         else:
-            self.text_error = self.create_text(640, 460,
-                text=res,
-                font=("Californian FB", 12, "bold"),
-                fill="red",
-                anchor='n'
-            )
+            self.itemconfig(self.text_error, text=res)
 
     def voltar(self, event):
         janela.janela.mudar_tela(TelaInicialProfessor.TelaInicialProfessor)
