@@ -90,11 +90,19 @@ class TelaManterAlunos(tk.Canvas):
             self.apply_filters()
 
     def _cadastrar(self, dados):
-        cadastrar_aluno(dados['nome'], dados['email'], dados['senha'], dados['turma'])
+        resp = cadastrar_aluno(dados['nome'], dados['email'], dados['senha'], dados['turma'])
+        if resp != None:
+            messagebox.showerror("Erro", resp)
+        else:
+            messagebox.showinfo("Sucesso", "Aluno cadastrado com sucesso!")
         self.apply_filters()
 
     def _editar(self, dados):
-        editar_aluno(dados['id'], dados['nome'], dados['email'], dados['senha'], dados['turma'])
+        resp = editar_aluno(dados['id'], dados['nome'], dados['email'], dados['senha'], dados['turma'])
+        if resp != None:
+            messagebox.showerror("Erro", resp)
+        else:
+            messagebox.showinfo("Sucesso", "Aluno atualizado com sucesso!")
         self.apply_filters()
 
     def voltar(self):
