@@ -36,7 +36,7 @@ class Janela():
         nome = self.tela_atual.__class__.__name__
         telas_sem_musica = [
             'TelaInicialProfessor','TelaLoginProfessor','TelaCadastroProfessor',
-            'TelaManterAlunos','TelaManterTurmas','TelaManterPerguntas','TelaPrincipalPainel'
+            'TelaManterAlunos','TelaManterTurmas','TelaManterPerguntas','TelaPrincipalPainel', 'Telanicial'
         ]
 
         # 1) Se está mutado, mantém pausado sempre

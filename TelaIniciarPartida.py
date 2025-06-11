@@ -91,10 +91,10 @@ class TelaIniciarPartida(tk.Canvas):
         self.tag_bind((btn_todas_tag), '<Button-1>', self.voltar)
 
         btn_mute_tag = 'btn_mute'
-        self.create_text(1200, 660,
-            text="DESATIVAR MÚSICA",
-            font=("Sylfaen", 15, "bold"),
-            fill="black",
+        self.create_text(1150, 650,
+            text="DESATIVAR/ATIVAR MÚSICA",
+            font=("Sylfaen", 13, "bold"),
+            fill="Brown",
             anchor='n',
             width=200,
             tags=(btn_mute_tag,),

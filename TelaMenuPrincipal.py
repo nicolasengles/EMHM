@@ -71,9 +71,9 @@ class TelaMenuPrincipal(tk.Canvas):
         self.tag_bind(btn_tag, '<Button-1>', self.perfil)
 
         btn_mute_tag = 'btn_mute'
-        self.create_text(1200, 650,
-            text="DESATIVAR MÚSICA",
-            font=("Sylfaen", 15, "bold"),
+        self.create_text(1150, 650,
+            text="DESATIVAR/ATIVAR MÚSICA",
+            font=("Sylfaen", 13, "bold"),
             fill="brown",
             anchor='n',
             width=200,
