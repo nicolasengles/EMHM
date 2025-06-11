@@ -20,7 +20,7 @@ class TelaManterAlunos(tk.Canvas):
         self.pack(fill="both", expand=True)
 
         # Fundo e cabeçalho
-        raw = Image.open(r'images\black-solid-background-2920-x-1642-jk98dr7udfcq3hqj.jpg')\
+        raw = Image.open(r'images\imagemfundo1.jpg')\
             .resize((width, height), Image.LANCZOS)
         self.bg = ImageTk.PhotoImage(raw)
         self.create_image(0, 0, image=self.bg, anchor='nw')

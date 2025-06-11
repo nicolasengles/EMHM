@@ -20,7 +20,7 @@ class TelaManterPerguntas(tk.Canvas):
         self.dificuldade_map = {"Todas": -1, "0": 0, "1": 1, "2": 2, "3": 3}
 
         # Carrega imagem de fundo e textos
-        raw = Image.open(r'images\black-solid-background-2920-x-1642-jk98dr7udfcq3hqj.jpg')\
+        raw = Image.open(r'images\imagemfundo1.jpg')\
             .resize((width, height), Image.LANCZOS)
         self.bg = ImageTk.PhotoImage(raw)
         self.create_image(0, 0, image=self.bg, anchor='nw')
