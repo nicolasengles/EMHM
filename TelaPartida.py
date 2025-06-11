@@ -177,6 +177,22 @@ class TelaPartida(tk.Canvas):
                 anchor='center',
                 width=600
             )
+        
+        btn_mute_tag = 'btn_mute'
+        self.create_text(100, 540,
+            text="DESATIVAR MÚSICA",
+            font=("Sylfaen", 15, "bold"),
+            fill="black",
+            anchor='n',
+            width=200,
+            tags=(btn_mute_tag,),
+            justify='center'
+        )
+        # binding corrigido:
+        self.tag_bind(
+            btn_mute_tag, '<Button-1>',
+            lambda e: janela.janela.toggle_mute(self, btn_mute_tag)
+        )
 
     def gerar_porcentagens_plateia(self):
         porcentagens = [0, 0, 0, 0, 0]

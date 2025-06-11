@@ -10,6 +10,8 @@ class Janela():
         pygame.mixer.music.set_volume(0.5)
         pygame.mixer.music.play(-1)   # -1 = loop infinito
 
+        self.mutado = False
+        
         # Janela Tk
         self.janela = tk.Tk()
         self.janela.title('Expedição do Milhão: Histórias e Mapas')
@@ -31,14 +33,39 @@ class Janela():
         self._ajusta_musica()
 
     def _ajusta_musica(self):
-        # Exemplo: não tocar na tela de menu inicial
-        telas_sem_musica = ['TelaInicialProfessor', 'TelaLoginProfessor', 'TelaCadastroProfessor',
-                            'TelaManterAlunos', 'TelaManterTurmas', 'TelaManterPerguntas', 'TelaPrincipalPainel']
         nome = self.tela_atual.__class__.__name__
+        telas_sem_musica = [
+            'TelaInicialProfessor','TelaLoginProfessor','TelaCadastroProfessor',
+            'TelaManterAlunos','TelaManterTurmas','TelaManterPerguntas','TelaPrincipalPainel'
+        ]
+
+        # 1) Se está mutado, mantém pausado sempre
+        if self.mutado:
+            pygame.mixer.music.pause()
+            return
+
+        # 2) Senão, pausa nas telas que não tocam e toca nas outras
         if nome in telas_sem_musica:
             pygame.mixer.music.pause()
         else:
-            # Se estava pausada, retoma; se já tocando, não reinicia
+            pygame.mixer.music.unpause()
+
+    def toggle_mute(self, canvas, tag='btn_mute'):
+        # inicializa self.mutado se ainda não existir
+        if not hasattr(self, 'mutado'):
+            self.mutado = False
+
+        # alterna estado
+        self.mutado = not self.mutado
+
+        # escolhe cor com base no estado
+        new_color = "blue" if self.mutado else "black"
+        canvas.itemconfig(tag, fill=new_color)
+
+        # pausa ou retoma a música
+        if self.mutado:
+            pygame.mixer.music.pause()
+        else:
             pygame.mixer.music.unpause()
 
 # Cria e inicia
