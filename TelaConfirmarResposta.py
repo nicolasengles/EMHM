@@ -40,7 +40,7 @@ class TelaConfirmarResposta(tk.Canvas):
         )
         self.create_text(640, 390,
             text="SIM",
-            font=("Californian FB", 20, "bold"),
+            font=("Sylfaen", 20, "bold"),
             fill="black",
             anchor='n',
             tags=(btn_tag,)
@@ -55,7 +55,7 @@ class TelaConfirmarResposta(tk.Canvas):
         )
         self.create_text(640, 490,
             text="NAO",
-            font=("Californian FB", 20, "bold"),
+            font=("Sylfaen", 20, "bold"),
             fill="black",
             anchor='n',
             tags=(btn_tag,)

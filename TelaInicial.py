@@ -12,11 +12,8 @@ class TelaInicial(tk.Canvas):
         img_fundo = Image.open('images/imagemfundo0.png')
         self.imagem_fundo = ImageTk.PhotoImage(img_fundo)
 
-        raw_prof = Image.open('images/FrameProfessor.png').resize((300, 80), Image.LANCZOS)
-        self.imagem_professor = ImageTk.PhotoImage(raw_prof)
-
-        raw_aluno = Image.open('images/FrameAluno.png').resize((300, 80), Image.LANCZOS)
-        self.imagem_aluno = ImageTk.PhotoImage(raw_aluno)
+        raw_alt = Image.open('images/Alternativa.png').resize((330, 62), Image.LANCZOS)
+        self.imagem_alt = ImageTk.PhotoImage(raw_alt)
 
         self.create_image(0, 0, image=self.imagem_fundo, anchor=tk.NW)
 
@@ -44,27 +41,31 @@ class TelaInicial(tk.Canvas):
         btn_aluno_tag = 'btn_aluno'
         self.create_image(
             640, 400,
-            image=self.imagem_aluno,
+            image=self.imagem_alt,
             anchor='n',
             tags=(btn_aluno_tag,)
         )
+        self.create_text(640, 415,
+            text="ALUNO",
+            font=("Sylfaen", 20, "bold"),
+            fill="black",
+            anchor='n',
+            tags=(btn_aluno_tag)
+        )
+        self.tag_bind(btn_aluno_tag, '<Button-1>', lambda event: janela.janela.mudar_tela(TelaLoginAluno))
 
-        self.tag_bind(btn_aluno_tag, '<Button-1>', self.on_click_aluno)
-
-        # 5) Cria o botão “PROFESSOR” usando Canvas + tag única
         btn_prof_tag = 'btn_professor'
         self.create_image(
             640, 500,
-            image=self.imagem_professor,
+            image=self.imagem_alt,
             anchor='n',
-            tags=(btn_prof_tag,)  # observe a vírgula!
+            tags=(btn_prof_tag)
         )
-
-        # 6) Vincula o clique na tag ao método on_first_click
-        self.tag_bind(btn_prof_tag, '<Button-1>', self.on_click_professor)   
-
-    def on_click_aluno(self, event):
-        janela.janela.mudar_tela(TelaLoginAluno)
-
-    def on_click_professor(self, event):
-        janela.janela.mudar_tela(TelaInicialProfessor)
+        self.create_text(640, 515,
+            text="PROFESSOR",
+            font=("Sylfaen", 20, "bold"),
+            fill="black",
+            anchor='n',
+            tags=(btn_prof_tag)
+        )
+        self.tag_bind(btn_prof_tag, '<Button-1>', lambda event: janela.janela.mudar_tela(TelaInicialProfessor))         
