@@ -13,29 +13,29 @@ class TelaGameOver(tk.Canvas):
         self.imagem_alt = ImageTk.PhotoImage(raw_alt)
 
         self.create_image(0, 0, image=self.imagem_fundo, anchor=tk.NW)
-        self.create_text(640, 100,
+        self.create_text(640, 160,
             text="GAME OVER",
-            font=("Californian FB", 48, "bold"),
+            font=("Sylfaen", 48, "bold"),
             fill="darkred",
             anchor='n'
         )
         
-        self.create_text(640, 200,
+        self.create_text(640, 265,
             text="PONTUAÇÃO FINAL: R$" + str(pontuacao),
-            font=("Californian FB", 30, "bold"),
+            font=("Sylfaen", 30, "bold"),
             fill="black",
             anchor='n'
         )
 
         btn_tag = 'btn_reiniciar'
-        self.create_image(640, 300,
+        self.create_image(640, 365,
             image=self.imagem_alt,
             anchor='n',
             tags=(btn_tag,)
         )
-        self.create_text(640, 315,
+        self.create_text(640, 380,
             text="REINICIAR JOGO",
-            font=("Californian FB", 20, "bold"),
+            font=("Sylfaen", 20, "bold"),
             fill="black",
             anchor='n',
             tags=(btn_tag,)
@@ -43,14 +43,14 @@ class TelaGameOver(tk.Canvas):
         self.tag_bind(btn_tag, '<Button-1>', self.reiniciar)
 
         btn_tag = 'btn_voltar'
-        self.create_image(640, 400,
+        self.create_image(640, 465,
             image=self.imagem_alt,
             anchor='n',
             tags=(btn_tag,)
         )
-        self.create_text(640, 415,
+        self.create_text(640, 480,
             text="VOLTAR AO MENU",
-            font=("Californian FB", 20, "bold"),
+            font=("Sylfaen", 20, "bold"),
             fill="black",
             anchor='n',
             tags=(btn_tag,)

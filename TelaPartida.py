@@ -39,7 +39,9 @@ class TelaPartida(tk.Canvas):
                 btn_tag = 'btn_pergunta_' + str(i)
                 self.create_text(x, y,
                     text=LETRAS[i] + ") " + txt,
-                    font=("Californian FB", 13, "bold"),
+                    font=("Sylfaen", 14, "bold"),
+                    justify="center",
+                    width=300,
                     tags=(btn_tag))
                 self.tag_bind(btn_tag, '<Button-1>', lambda event, resposta=i: self.responder_pergunta(event, resposta))
 
@@ -68,7 +70,9 @@ class TelaPartida(tk.Canvas):
                     btn_tag = 'btn_pergunta_' + str(i)
                     self.create_text(x, y,
                         text=LETRAS[i] + ") " + txt,
-                        font=("Californian FB", 13, "bold"),
+                        font=("Sylfaen", 14, "bold"),
+                        justify="center",
+                        width=300,
                         tags=(btn_tag))
                     self.tag_bind(btn_tag, '<Button-1>', lambda event, resposta=i: self.responder_pergunta(event, resposta))
 
@@ -76,45 +80,45 @@ class TelaPartida(tk.Canvas):
             case 0:
                 self.create_text(1250, 30,
                     text="FÁCIL",
-                    font=("IM FELL ENGLISH SC", 18, "bold"),
+                    font=("Sylfaen", 22, "bold"),
                     fill="green",
                     anchor='ne')
             case 1:
                 self.create_text(1250, 30,
                     text="MÉDIA",
-                    font=("IM FELL ENGLISH SC", 18, "bold"),
+                    font=("Sylfaen", 22, "bold"),
                     fill="yellow",
                     anchor='ne')
             case 2:
                 self.create_text(1250, 30,
                     text="DIFÍCIL",
-                    font=("IM FELL ENGLISH SC", 18, "bold"),
+                    font=("Sylfaen", 22, "bold"),
                     fill="red",
                     anchor='ne')
             case 3:
                 self.create_text(1250, 30,
                     text="PERGUNTA DO MILHÃO",
-                    font=("IM FELL ENGLISH SC", 18, "bold"),
+                    font=("Sylfaen", 22, "bold"),
                     fill="purple",
                     anchor='ne')
         
-        self.create_text(width/2, 190,
+        self.create_text(width/2, 180,
             text=self.pergunta.enunciado,
-            font=("Californian FB", 32, "bold"),
+            font=("Sylfaen", 32, "bold"),
             fill="darkred",
-            anchor='center',
+            justify='center',
             width=1000
         )
         
         self.create_text(50, 30,
             text="PERGUNTA " + str(numero_pergunta_atual),
-            font=("Californian FB", 22, "bold"),
+            font=("Sylfaen", 22, "bold"),
             fill="darkred",
             anchor='nw')
         
         self.create_text(50, 650,
             text="PRÊMIO: " + str(pontuacao),
-            font=("Californian FB", 22, "bold"),
+            font=("Sylfaen", 22, "bold"),
             fill="black",
             anchor='nw')
 
@@ -125,7 +129,7 @@ class TelaPartida(tk.Canvas):
             tags=(btn_tag,))
         self.create_text(1100, 660,
             text="DESISTIR",
-            font=("Californian FB", 18, "bold"),
+            font=("Sylfaen", 18, "bold"),
             fill="darkred",
             anchor='center',
             tags=(btn_tag,))
@@ -140,7 +144,7 @@ class TelaPartida(tk.Canvas):
             )
             self.create_text(630, 620,
                 text="PEDIR AJUDA",
-                font=("Californian FB", 18, "bold"),
+                font=("Sylfaen", 18, "bold"),
                 fill="black",
                 anchor='center',
                 tags=(btn_tag,)
@@ -149,7 +153,7 @@ class TelaPartida(tk.Canvas):
         elif ajuda == partida.Ajuda.DICA:
             self.create_text(630, 620,
                 text="DICA: " + pergunta.dica,
-                font=("Californian FB", 14, "bold"),
+                font=("Sylfaen", 14, "bold"),
                 fill="black",
                 anchor='center',
                 width=600
@@ -157,7 +161,7 @@ class TelaPartida(tk.Canvas):
         elif ajuda == partida.Ajuda.PLATEIA:
             self.create_text(630, 620,
                 text="PLATEIA:",
-                font=("Californian FB", 14, "bold"),
+                font=("Sylfaen", 14, "bold"),
                 fill="black",
                 anchor='center',
                 width=600
@@ -168,7 +172,7 @@ class TelaPartida(tk.Canvas):
                 text_plateia += LETRAS[i] + ") " + str(porcentagem) + "% "
             self.create_text(630, 650,
                 text=text_plateia,
-                font=("Californian FB", 14, "bold"),
+                font=("Sylfaen", 14, "bold"),
                 fill="black",
                 anchor='center',
                 width=600
@@ -187,19 +191,12 @@ class TelaPartida(tk.Canvas):
         return app.app.partida.ajudas_disponiveis
 
     def _on_utilizar_ajuda(self, event):
-        if len(app.app.partida.ajudas_disponiveis) < 1:
-            self.create_text(630, 700,
-                text="Você não possui mais ajudas disponíveis.",
-                font=("Californian FB", 12, "bold"),
-                fill="red",
-                anchor='center',
-            )
         app.app.partida.exibir_tela_ajuda()
 
     def responder_pergunta(self, event, resposta):
         janela.janela.mudar_tela(lambda master: TelaConfirmarResposta(
             master=master,
-            resposta=self.pergunta.alternativas[resposta],
+            resposta=LETRAS[self.pergunta.resposta_correta] + ") " + self.pergunta.alternativas[resposta],
             correta=(resposta == self.pergunta.resposta_correta)
         ))
 

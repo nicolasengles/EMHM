@@ -13,29 +13,29 @@ class TelaVitoria(tk.Canvas):
         self.imagem_alt = ImageTk.PhotoImage(raw_alt)
 
         self.create_image(0, 0, image=self.imagem_fundo, anchor=tk.NW)
-        self.create_text(640, 100,
+        self.create_text(640, 150,
             text="PARABÉNS!",
-            font=("Californian FB", 48, "bold"),
+            font=("Sylfaen", 48, "bold"),
             fill="darkred",
             anchor='n'
         )
         
-        self.create_text(640, 200,
+        self.create_text(640, 250,
             text="VOCÊ SE TORNOU UM MILIONÁRIO!",
-            font=("Californian FB", 30, "bold"),
+            font=("Sylfaen", 30, "bold"),
             fill="black",
             anchor='n'
         )
 
         btn_tag = 'btn_reiniciar'
-        self.create_image(640, 300,
+        self.create_image(640, 350,
             image=self.imagem_alt,
             anchor='n',
             tags=(btn_tag,)
         )
-        self.create_text(640, 315,
+        self.create_text(640, 365,
             text="REINICIAR JOGO",
-            font=("Californian FB", 20, "bold"),
+            font=("Sylfaen", 20, "bold"),
             fill="black",
             anchor='n',
             tags=(btn_tag,)
@@ -43,14 +43,14 @@ class TelaVitoria(tk.Canvas):
         self.tag_bind(btn_tag, '<Button-1>', self.reiniciar)
 
         btn_tag = 'btn_voltar'
-        self.create_image(640, 400,
+        self.create_image(640, 450,
             image=self.imagem_alt,
             anchor='n',
             tags=(btn_tag,)
         )
-        self.create_text(640, 415,
+        self.create_text(640, 465,
             text="VOLTAR AO MENU",
-            font=("Californian FB", 20, "bold"),
+            font=("Sylfaen", 20, "bold"),
             fill="black",
             anchor='n',
             tags=(btn_tag,)

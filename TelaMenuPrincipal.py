@@ -21,19 +21,33 @@ class TelaMenuPrincipal(tk.Canvas):
         self.imagem_jogar = ImageTk.PhotoImage(raw_jogar)
 
         self.create_image(0, 0, image=self.imagem_fundo, anchor='nw')
-        self.create_image(640, 100, image=self.imagem_titulo, anchor='n')
-        self.create_image(810, 200, image=self.imagem_subtitulo, anchor='n')
+        # self.create_image(640, 100, image=self.imagem_titulo, anchor='n')
+        # self.create_image(810, 200, image=self.imagem_subtitulo, anchor='n')
+
+        self.create_text(640, 100,
+            text="EXPEDIÇÃO DO MILHÃO",
+            font=("Sylfaen", 48, "bold"),
+            fill="darkred",
+            anchor='n'
+        )
+
+        self.create_text(775, 160,
+            text="Histórias e Mapas",
+            font=("Sylfaen", 48),
+            fill="darkred",
+            anchor='n'
+        )
 
         btn_tag = 'btn_jogar'
-        self.create_image(640, 300,
+        self.create_image(640, 350,
             image=self.imagem_jogar,
             anchor='n',
             tags=(btn_tag,)
         )
 
-        self.create_text(640, 315,
+        self.create_text(640, 362,
             text="JOGAR",
-            font=("Californian FB", 20, "bold"),
+            font=("Sylfaen", 20, "bold"),
             fill="black",
             anchor='n',
             tags=(btn_tag,)
@@ -41,15 +55,15 @@ class TelaMenuPrincipal(tk.Canvas):
         self.tag_bind(btn_tag, '<Button-1>', self.jogar)
 
         btn_tag = 'btn_perfil'
-        self.create_image(640, 400,
+        self.create_image(640, 450,
             image=self.imagem_jogar,
             anchor='n',
             tags=(btn_tag,)
         )
 
-        self.create_text(640, 415,
+        self.create_text(640, 462,
             text="PERFIL",
-            font=("Californian FB", 20, "bold"),
+            font=("Sylfaen", 20, "bold"),
             fill="black",
             anchor='n',
             tags=(btn_tag,)

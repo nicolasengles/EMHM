@@ -6,28 +6,30 @@ import app
 
 class TelaAjuda(tk.Canvas):
     def __init__(self, master, width=1280, height=720, highlightthickness=0):
-        super().__init__(master)
+        super().__init__(master, width=width, height=height, highlightthickness=highlightthickness)
         self.pack(fill="both", expand=True)
 
         img_fundo = Image.open('images/imagemfundo0.png')
+        self.imagem_fundo = ImageTk.PhotoImage(img_fundo)
+
         raw_alt = Image.open('images/Alternativa.png').resize((330, 62), Image.LANCZOS)
         self.imagem_alt = ImageTk.PhotoImage(raw_alt)
-        self.imagem_fundo = ImageTk.PhotoImage(img_fundo)
+        
         self.create_image(0, 0, image=self.imagem_fundo, anchor=tk.NW)
 
-        self.create_text(650, 200,
+        self.create_text(640, 150,
             text="AJUDAS",
-            font=("Californian FB", 48, "bold"),
+            font=("Sylfaen", 48, "bold"),
             fill="black",
             anchor='n'
         )
 
         if partida.Ajuda.DICA in app.app.partida.ajudas_disponiveis:
             btn_tag = 'btn_dica'
-            self.create_image(650, 300, image=self.imagem_alt, anchor='n', tags=(btn_tag))
-            self.create_text(650, 330,
+            self.create_image(640, 250, image=self.imagem_alt, anchor='n', tags=(btn_tag))
+            self.create_text(640, 280,
                 text="DICA",
-                font=("Californian FB", 28, "bold"),
+                font=("Sylfaen", 28, "bold"),
                 tags=(btn_tag)
             )
             self.tag_bind(btn_tag, '<Button-1>', self._on_ajuda_dica)
@@ -35,10 +37,10 @@ class TelaAjuda(tk.Canvas):
 
         if partida.Ajuda.DUAS_OPCOES in app.app.partida.ajudas_disponiveis:
             btn_tag = 'btn_duas_opcoes'
-            self.create_image(650, 400, image=self.imagem_alt, anchor='n', tags=(btn_tag))
-            self.create_text(650, 430,
+            self.create_image(640, 350, image=self.imagem_alt, anchor='n', tags=(btn_tag))
+            self.create_text(640, 380,
                 text="DUAS OPÇÕES",
-                font=("Californian FB", 28, "bold"),
+                font=("Sylfaen", 28, "bold"),
                 tags=(btn_tag)
             )
             self.tag_bind(btn_tag, '<Button-1>', self._on_ajuda_remover_duas)
@@ -46,20 +48,20 @@ class TelaAjuda(tk.Canvas):
 
         if partida.Ajuda.PLATEIA in app.app.partida.ajudas_disponiveis:
             btn_tag = 'btn_plateia'
-            self.create_image(650, 500, image=self.imagem_alt, anchor='n', tags=(btn_tag))
-            self.create_text(650, 530,
+            self.create_image(640, 450, image=self.imagem_alt, anchor='n', tags=(btn_tag))
+            self.create_text(640, 480,
                 text="PLATEIA",
-                font=("Californian FB", 28, "bold"),
+                font=("Sylfaen", 28, "bold"),
                 tags=(btn_tag)
             )
             self.tag_bind(btn_tag, '<Button-1>', self._on_ajuda_plateia)
             self.tag_bind(btn_tag, '<Button-1>', self._on_ajuda_plateia)
 
         btn_tag = 'btn_voltar'
-        self.create_image(650, 600, image=self.imagem_alt, anchor='n', tags=(btn_tag))
-        self.create_text(650, 630,
+        self.create_image(640, 550, image=self.imagem_alt, anchor='n', tags=(btn_tag))
+        self.create_text(640, 580,
             text="VOLTAR",
-            font=("Californian FB", 28, "bold"),
+            font=("Sylfaen", 28, "bold"),
             fill="darkred",
             tags=(btn_tag)
         )

@@ -25,7 +25,6 @@ class Partida:
         self.perguntas = sgbd.buscar_perguntas(self.materia, self.dificuldade)
         self.pergunta_atual = None
         self.perguntas_previas = []
-
         self.proxima_pergunta()
     
     def proxima_pergunta(self):
@@ -64,6 +63,11 @@ class Partida:
         self.proxima_pergunta()
     
     def erro(self):
+        if self.dificuldade == 0:
+            janela.janela.mudar_tela(lambda master: TelaGameOver(master=master, pontuacao=0))
+            app.app.finalizar_partida(0)
+            return
+        
         janela.janela.mudar_tela(lambda master: TelaGameOver(master=master, pontuacao=VALORES_PERGUNTAS[self.dificuldade]))
         app.app.finalizar_partida(VALORES_PERGUNTAS[self.dificuldade])
 

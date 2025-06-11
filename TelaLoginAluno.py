@@ -16,9 +16,9 @@ class TelaLoginAluno(tk.Canvas):
         self.create_image(0, 0, image=self.imagem_fundo, anchor=tk.NW)
 
         # text
-        self.create_text(640, 250,
+        self.create_text(640, 200,
             text="LOGIN",
-            font=("Californian FB", 48, "bold"),
+            font=("Sylfaen", 48, "bold"),
             fill="black",
             anchor='n'
         )
@@ -27,7 +27,7 @@ class TelaLoginAluno(tk.Canvas):
         placeholder_email = "Digite seu e-mail (@p4ed.com):"
         entry_email = tk.Entry(self, font=("Arial", 16), fg="gray")
         entry_email.insert(0, placeholder_email)
-        self.create_window(640, 370, window=entry_email, anchor='n', width=500)
+        self.create_window(640, 320, window=entry_email, anchor='n', width=500)
 
         def on_focus_in_email(event):
             if entry_email.get() == placeholder_email:
@@ -46,7 +46,7 @@ class TelaLoginAluno(tk.Canvas):
         placeholder_senha = "Digite sua senha:"
         entry_senha = tk.Entry(self, font=("Arial", 16), fg="gray", show="*")
         entry_senha.insert(0, placeholder_senha)
-        self.create_window(640, 420, window=entry_senha, anchor='n', width=500)
+        self.create_window(640, 370, window=entry_senha, anchor='n', width=500)
 
         def on_focus_in_senha(event):
             if entry_senha.get() == placeholder_senha:
@@ -63,9 +63,9 @@ class TelaLoginAluno(tk.Canvas):
 
         # Botao "ENTRAR"	
         btn_entrar_tag = 'btn_entrar'
-        self.create_text(640, 485,
+        self.create_text(640, 435,
             text="ENTRAR",
-            font=("Arial", 18, "bold"),
+            font=("Sylfaen", 24, "bold"),
             fill="green",
             anchor='n',
             tags=(btn_entrar_tag,)
@@ -74,18 +74,18 @@ class TelaLoginAluno(tk.Canvas):
 
         # Botão “SAIR”  
         btn_sair_tag = 'btn_sair'
-        self.create_text(640, 520,
+        self.create_text(640, 480,
             text="SAIR",
-            font=("Arial", 18, "bold"),
+            font=("Sylfaen", 24, "bold"),
             fill="red",
             anchor='n',
             tags=(btn_sair_tag,)
         )
         self.tag_bind(btn_sair_tag, '<Button-1>', lambda e: janela.janela.mudar_tela(TelaInicial.TelaInicial))
 
-        self.text_error = self.create_text(640, 457,
+        self.text_error = self.create_text(640, 407,
                 text="",
-                font=("Californian FB", 12, "bold"),
+                font=("Sylfaen", 12, "bold"),
                 fill="red",
                 anchor='n'
             )

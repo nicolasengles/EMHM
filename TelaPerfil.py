@@ -16,7 +16,7 @@ class TelaPerfil(tk.Canvas):
         self.create_image(0, 0, image=self.imagem_fundo, anchor=tk.NW)
         self.create_text(640, 100,
             text="PERFIL",
-            font=("Californian FB", 48, "bold"),
+            font=("Sylfaen", 48, "bold"),
             fill="darkred",
             anchor='n'
         )
@@ -57,7 +57,7 @@ class TelaPerfil(tk.Canvas):
         )
         self.create_text(640, 615,
             text="VOLTAR",
-            font=("Californian FB", 20, "bold"),
+            font=("Sylfaen", 20, "bold"),
             fill="black",
             anchor='n',
             tags=(btn_tag,)
