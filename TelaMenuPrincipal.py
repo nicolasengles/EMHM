@@ -70,6 +70,22 @@ class TelaMenuPrincipal(tk.Canvas):
         )   
         self.tag_bind(btn_tag, '<Button-1>', self.perfil)
 
+        btn_mute_tag = 'btn_mute'
+        self.create_text(1200, 650,
+            text="DESATIVAR MÚSICA",
+            font=("Sylfaen", 15, "bold"),
+            fill="brown",
+            anchor='n',
+            width=200,
+            tags=(btn_mute_tag,),
+            justify='center'
+        )
+        # binding corrigido:
+        self.tag_bind(
+            btn_mute_tag, '<Button-1>',
+            lambda e: janela.janela.toggle_mute(self, btn_mute_tag)
+        )
+
     def jogar(self, event):
         janela.janela.mudar_tela(TelaIniciarPartida)
 

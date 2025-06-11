@@ -179,10 +179,10 @@ class TelaPartida(tk.Canvas):
             )
         
         btn_mute_tag = 'btn_mute'
-        self.create_text(100, 540,
+        self.create_text(120, 540,
             text="DESATIVAR MÚSICA",
             font=("Sylfaen", 15, "bold"),
-            fill="black",
+            fill="brown",
             anchor='n',
             width=200,
             tags=(btn_mute_tag,),

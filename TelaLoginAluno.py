@@ -91,10 +91,10 @@ class TelaLoginAluno(tk.Canvas):
             )
         
         btn_mute_tag = 'btn_mute'
-        self.create_text(1200, 660,
+        self.create_text(1200, 650,
             text="DESATIVAR MÚSICA",
             font=("Sylfaen", 15, "bold"),
-            fill="black",
+            fill="brown",
             anchor='n',
             width=200,
             tags=(btn_mute_tag,),

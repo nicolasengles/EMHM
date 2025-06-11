@@ -50,23 +50,16 @@ class Janela():
         else:
             pygame.mixer.music.unpause()
 
-    def toggle_mute(self, canvas, tag='btn_mute'):
-        # inicializa self.mutado se ainda não existir
-        if not hasattr(self, 'mutado'):
-            self.mutado = False
-
+    def toggle_mute(self, *args, **kwargs):
         # alterna estado
-        self.mutado = not self.mutado
-
-        # escolhe cor com base no estado
-        new_color = "blue" if self.mutado else "black"
-        canvas.itemconfig(tag, fill=new_color)
+        self.mutado = not getattr(self, 'mutado', False)
 
         # pausa ou retoma a música
         if self.mutado:
             pygame.mixer.music.pause()
         else:
             pygame.mixer.music.unpause()
+
 
 # Cria e inicia
 janela = Janela()
