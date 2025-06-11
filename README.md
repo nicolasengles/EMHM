@@ -17,4 +17,4 @@
 > pip freeze > requirements.txt
 
 ### Para compilar:
-> nuitka emhm.py --standalone --enable-plugin=tk-inter --include-data-file=.env=.env --include-data-dir=images=images --windows-console-mode=disable --output-dir=build/emhm
+> nuitka emhm.py --standalone --enable-plugin=tk-inter --include-data-file=.env=.env --include-data-dir=images=images --windows-console-mode=disable --output-dir=build
