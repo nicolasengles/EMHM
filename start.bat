@@ -1,0 +1,3 @@
+@echo Iniciando...
+@pip install -r requirements.txt > nul
+@python emhm.py > nul
