@@ -25,10 +25,10 @@ def autenticar_usuario(tipo_usuario: int, email : str, senha : str):
         bd = sgbd.cursor()
         match tipo_usuario:
             case 0:
-                bd.execute(f"SELECT * FROM aluno WHERE email = '{email}' AND senha = '{senha}';")
+                bd.execute("SELECT * FROM aluno WHERE email = %s AND senha = %s;", (email, senha))
                 dados = bd.fetchall()[0]
 
-                bd.execute(f"SELECT * FROM turma WHERE id = {dados[5]};")
+                bd.execute("SELECT * FROM turma WHERE id = %s;", (dados[5],))
                 dados_turma = bd.fetchall()[0]
 
                 app.app.usuario = Aluno(
@@ -44,7 +44,7 @@ def autenticar_usuario(tipo_usuario: int, email : str, senha : str):
                 )
 
             case 1:
-                bd.execute(f"SELECT * FROM professor WHERE email = '{email}' AND senha = '{senha}';")
+                bd.execute("SELECT * FROM professor WHERE email = %s AND senha = %s;", (email, senha))
                 dados = bd.fetchall()[0]
 
                 app.app.usuario = Professor(
@@ -89,11 +89,11 @@ def cadastrar_professor(nome : str, email : str, senha : str):
         sgbd = conectar_sgbd()
         bd = sgbd.cursor()
 
-        bd.execute(f"SELECT * FROM professor WHERE email = '{email}';")
+        bd.execute("SELECT * FROM professor WHERE email = %s;", (email,))
         if len(bd.fetchall()) > 0:
             return "Já existe uma conta associada a este email."
         
-        bd.execute(f"INSERT INTO professor (nome, email, senha) VALUES ('{nome}', '{email}', '{senha}');")
+        bd.execute("INSERT INTO professor (nome, email, senha) VALUES (%s, %s, %s);", (nome, email, senha))
         sgbd.commit()
         autenticar_usuario(1, email=email, senha=senha)
     except Exception as erro:
@@ -128,14 +128,14 @@ def editar_professor(id : int, nome : str, email : str, senha : str):
         sgbd = conectar_sgbd()
         bd = sgbd.cursor()
 
-        bd.execute(f"SELECT * FROM professor WHERE email = '{email}';")
+        bd.execute("SELECT * FROM professor WHERE email = %s;", (email,))
         if len(bd.fetchall()) > 0:
             return "Já existe uma conta associada a este email."
     
         if senha == "":
-            bd.execute(f"UPDATE professor SET nome = '{nome}', email = '{email}' WHERE id = {id};")
+            bd.execute("UPDATE professor SET nome = %s, email = %s WHERE id = %s;", (nome, email, id))
         else:
-            bd.execute(f"UPDATE professor SET nome = '{nome}', email = '{email}', senha = '{senha}' WHERE id = {id};")
+            bd.execute("UPDATE professor SET nome = %s, email = %s, senha = %s WHERE id = %s;", (nome, email, senha, id))
         sgbd.commit()
     except:
         return "Ops! Algo deu errado."
@@ -160,7 +160,7 @@ def buscar_alunos():
                         turma = i
                 
                 if turma == None:
-                    bd.execute(f"SELECT * FROM turma WHERE id = {resultado[5]};")
+                    bd.execute("SELECT * FROM turma WHERE id = %s;", (resultado[5],))
                     dados = bd.fetchall()[0]
                     turma = Turma(
                         id=dados[0],
@@ -206,11 +206,11 @@ def cadastrar_aluno(nome : str, email : str, senha : str, turma : str):
         sgbd = conectar_sgbd()
         bd = sgbd.cursor()
 
-        bd.execute(f"SELECT * FROM aluno WHERE email = '{email}';")
+        bd.execute(f"SELECT * FROM aluno WHERE email = %s;", (email,))
         if len(bd.fetchall()) > 0:
             return "Já existe uma conta associada a este email."
         
-        bd.execute(f"INSERT INTO aluno (nome, email, senha, pontuacao, turma_id) VALUES ('{nome}', '{email}', '{senha}', 0, {turma.id});")
+        bd.execute("INSERT INTO aluno (nome, email, senha, pontuacao, turma_id) VALUES (%s, %s, %s, 0, %s);", (nome, email, senha, turma.id))
         sgbd.commit()
     except Exception as erro:
         print(erro)
@@ -243,14 +243,14 @@ def editar_aluno(id : int, nome : str, email : str, senha : str, turma : str):
         sgbd = conectar_sgbd()
         bd = sgbd.cursor()
 
-        bd.execute(f"SELECT * FROM aluno WHERE email = '{email}';")
+        bd.execute("SELECT * FROM aluno WHERE email = %s;", (email,))
         if len(bd.fetchall()) > 1:
             return "Já existe uma conta associada a este email."
         
         if senha == "":
-            bd.execute(f"UPDATE aluno SET nome = '{nome}', email = '{email}', turma_id = {turma.id} WHERE id = {id};")
+            bd.execute("UPDATE aluno SET nome = %s, email = %s, turma_id = %s WHERE id = %s;", (nome, email, turma.id, id))
         else:
-            bd.execute(f"UPDATE aluno SET nome = '{nome}', email = '{email}', senha = '{senha}', turma_id = {turma.id} WHERE id = {id};")
+            bd.execute("UPDATE aluno SET nome = %s, email = %s, senha = %s, turma_id = %s WHERE id = %s", (nome, email, senha, turma.id, id))
         sgbd.commit()
     except:
         return "Ops! Algo deu errado."
@@ -264,7 +264,7 @@ def excluir_aluno(aluno : Aluno):
     try:
         sgbd = conectar_sgbd()
         bd = sgbd.cursor()
-        bd.execute(f"DELETE FROM aluno WHERE id = {aluno.id}")
+        bd.execute("DELETE FROM aluno WHERE id = %s", (aluno.id,))
         sgbd.commit()
     finally:
         if bd:
@@ -316,7 +316,7 @@ def cadastrar_pergunta(materia : int, dificuldade : int, enunciado : str, dica :
     try:
         sgbd = conectar_sgbd()
         bd = sgbd.cursor()
-        bd.execute(f"INSERT INTO pergunta (materia, dificuldade, enunciado, dica, resposta_correta, alternativa_a, alternativa_b, alternativa_c, alternativa_d, alternativa_e) VALUES ({materia}, {dificuldade}, '{enunciado}', '{dica}', {resposta_correta}, '{alternativas[0]}', '{alternativas[1]}', '{alternativas[2]}', '{alternativas[3]}', '{alternativas[4]}');")
+        bd.execute("INSERT INTO pergunta (materia, dificuldade, enunciado, dica, resposta_correta, alternativa_a, alternativa_b, alternativa_c, alternativa_d, alternativa_e) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);", (materia, dificuldade, enunciado, dica, resposta_correta, alternativas[0], alternativas[1], alternativas[2], alternativas[3], alternativas[4]))
         sgbd.commit()
     except Exception as erro:
         print(erro)
@@ -330,7 +330,7 @@ def editar_pergunta(id : int, materia : int, dificuldade : int, enunciado : str,
     try:
         sgbd = conectar_sgbd()
         bd = sgbd.cursor()
-        bd.execute(f"UPDATE pergunta SET materia = {materia}, dificuldade = {dificuldade}, enunciado = '{enunciado}', dica = '{dica}', resposta_correta = {resposta_correta}, alternativa_a = '{alternativas[0]}', alternativa_b = '{alternativas[1]}', alternativa_c = '{alternativas[2]}', alternativa_d = '{alternativas[3]}', alternativa_e ='{alternativas[4]}' WHERE id = {id};")
+        bd.execute("UPDATE pergunta SET materia = %s, dificuldade = %s, enunciado = %s, dica = %s, resposta_correta = %s, alternativa_a = %s, alternativa_b = %s, alternativa_c = %s, alternativa_d = %s, alternativa_e = %s WHERE id = %s;", (materia, dificuldade, enunciado, dica, resposta_correta, alternativas[0], alternativas[1], alternativas[2], alternativas[3], alternativas[4]))
         sgbd.commit()
     except Exception as erro:
         print(erro)
@@ -344,7 +344,7 @@ def excluir_pergunta(pergunta : Pergunta):
     try:
         sgbd = conectar_sgbd()
         bd = sgbd.cursor()
-        bd.execute(f"DELETE FROM pergunta WHERE id = {pergunta.id}")
+        bd.execute("DELETE FROM pergunta WHERE id = %s", (pergunta.id,))
         sgbd.commit()
     finally:
         if bd:
@@ -356,7 +356,7 @@ def buscar_turmas():
     try:
         sgbd = conectar_sgbd()
         bd = sgbd.cursor()
-        bd.execute(f"SELECT * FROM turma")
+        bd.execute("SELECT * FROM turma")
         resultados = bd.fetchall()
 
         turmas = []
@@ -377,12 +377,11 @@ def buscar_turmas():
 def cadastrar_turma(nome : str, id_professor : int):
     if len([turma for turma in buscar_turmas() if nome == turma.nome]) > 0:
         return "Já existe uma turma com este nome."
-        return
     
     try:
         sgbd = conectar_sgbd()
         bd = sgbd.cursor()
-        bd.execute(f"INSERT INTO turma (nome, professor_id) VALUES ('{nome}', {id_professor});")
+        bd.execute("INSERT INTO turma (nome, professor_id) VALUES (%s, %s);", (nome, id_professor))
         sgbd.commit()
     finally:
         if bd:
@@ -394,7 +393,7 @@ def editar_turma(id : int, nome : str):
     try:
         sgbd = conectar_sgbd()
         bd = sgbd.cursor()
-        bd.execute(f"UPDATE turma SET nome = '{nome}' WHERE id = {id};")
+        bd.execute("UPDATE turma SET nome = %s WHERE id = %s;", (nome, id))
         sgbd.commit()
         turma = [turma for turma in app.app.turmas if turma.id == id][0]
         turma.nome = nome
@@ -408,7 +407,7 @@ def excluir_turma(turma : Turma):
     try:
         sgbd = conectar_sgbd()
         bd = sgbd.cursor()
-        bd.execute(f"DELETE FROM turma WHERE id = {turma.id}")
+        bd.execute("DELETE FROM turma WHERE id = %s", (turma.id,))
         sgbd.commit()
         app.app.turmas.remove(turma)
     finally:
@@ -421,10 +420,10 @@ def incrementar_pontuacao_aluno(aluno : Aluno, pontuacao : int):
     try:
         sgbd = conectar_sgbd()
         bd = sgbd.cursor()
-        bd.execute(f"SELECT pontuacao FROM aluno WHERE id = {aluno.id};")
+        bd.execute("SELECT pontuacao FROM aluno WHERE id = %s;", (aluno.id,))
         pontuacao_antiga = bd.fetchall()[0][0]
         pontuacao_nova = pontuacao_antiga + pontuacao
-        bd.execute(f"UPDATE aluno SET pontuacao = {pontuacao_nova} WHERE id = {aluno.id};")
+        bd.execute("UPDATE aluno SET pontuacao = %s WHERE id = %s;", (pontuacao_nova, aluno.id))
         sgbd.commit()
         app.app.usuario.pontuacao = pontuacao_nova
     finally:
